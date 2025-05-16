@@ -460,11 +460,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function startCamera(loadingElem) {
         const videoConstraints = { facingMode: "environment" };
         const qrConfig = {
-            fps: 15,
+            fps: 10,
             videoConstraints: {
                 facingMode: "environment",
-                width: { min: 1280, ideal: 1920 },
-                height: { min: 720, ideal: 1080 }
+                width: { ideal: 1920 },
+                height: { ideal: 1080 }
             }
         };
         html5QrCode
