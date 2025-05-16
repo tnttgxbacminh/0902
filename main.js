@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Các biến và khởi tạo
     const webAppUrl =
-        "https://script.google.com/macros/s/AKfycbxyZkkL3uRTcLVUbcxytOKiKfWOAow_hKuwHCW6FcHVSAXTv38ZnYfnW4sCXscdJ2oN/exec";
+        "https://script.google.com/macros/s/AKfycbz1Pf6rxz0HVA7FA_GpDWm5NDdamvtC8-vNRM9MWwmhTa3Zo6ACKdrv8j9t7z-7l-wi/exec";
     let currentAttendanceType = "di-le"; // Mặc định
     let currentMode = "qr"; // Có thể là "qr", "search", "report"
     const searchCache = new Map();
