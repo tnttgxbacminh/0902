@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'attendance-cache-v17';
+﻿const CACHE_NAME = 'attendance-cache-v1';
 const urlsToCache = [
     '/0902/',
     '/0902/index.html',
@@ -93,13 +93,13 @@ self.addEventListener('notificationclick', function (event) {
                 for (var i = 0; i < clientList.length; i++) {
                     var client = clientList[i];
                     // Nếu cửa sổ đã mở và URL trùng, focus nó (điều này sẽ mở lại ứng dụng PWA)
-                    if (client.url === 'https://pi982.github.io/0902/' && 'focus' in client) {
+                    if (client.url === 'https://tnttgxbacminh.github.io/0902/' && 'focus' in client) {
                         return client.focus();
                     }
                 }
                 // Nếu không có cửa sổ nào mở, mở một cửa sổ mới với URL của PWA
                 if (clients.openWindow) {
-                    return clients.openWindow('https://pi982.github.io/0902/');
+                    return clients.openWindow('https://tnttgxbacminh.github.io/0902/');
                 }
             })
     );
