@@ -943,7 +943,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Nếu nút toggle-off (xin vắng) đang active thì thêm mô tả
                 if (btnOff.classList.contains("active")) {
-                    attendanceDescription = " xin vắng " + attendanceDescription;
+                    attendanceDescription = " nghỉ phép " + attendanceDescription;
                 }
 
                 const interactiveElements = document.querySelectorAll("button, input");
