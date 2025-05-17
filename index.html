@@ -46,19 +46,23 @@
     <section id="function-container" class="function-container" style="display: none;">
         <div id="qr-container" class="fullscreen" style="display: none;">
             <div id="qr-scanner">
-                <div class="loading"></div>
+                <div class="loading">Không truy cập được, vui lòng kiểm tra camera!</div>
             </div>
         </div>
 
         <div id="search-container" class="container" hidden fade-in>
-            <input type="text" id="search-query" placeholder="Nhập tên, ID hoặc lớp" />
-            <button id="search-button">Tìm kiếm</button>
+            <div class="input-group">
+                <input type="text" id="search-query" placeholder="Nhập tên, ID hoặc lớp" />
+                <button id="search-button"><img src="images/search.png" alt="" /></button>
+            </div>
             <div id="search-results"></div>
         </div>
 
         <div id="report-container" class="container" hidden fade-in>
-            <input type="text" id="report-query" placeholder="Nhập tên, ID hoặc lớp" />
-            <button id="report-button">Tìm kiếm</button>
+            <div class="input-group">
+                <input type="text" id="report-query" placeholder="Nhập tên, ID hoặc lớp" />
+                <button id="report-button"><img src="images/search.png" alt="" /></button>
+            </div>
             <div id="report-results"></div>
         </div>
     </section>
@@ -81,6 +85,7 @@
             <img src="/0902/images/report.png" alt="Report" class="nav-icon">
             <span class="nav-label">Kết quả</span>
         </button>
+        <div class="indicator"></div>
     </section>
 
     <!-- Modal thông báo -->
