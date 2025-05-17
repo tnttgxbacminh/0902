@@ -299,7 +299,6 @@ video {
 	/* Giảm padding và font-size mặc định */
 	padding: 10px;
 	margin-top: 10px;
-	margin-bottom: 10px;
 	font-size: 0.9rem; /* Giảm đáng kể */
 	border: 1px solid var(--neutral-color); /* Màu border nhất quán */
 	border-radius: 5px;
@@ -649,7 +648,7 @@ header {
 	body.app-active .top-image {
 		width: 70px; /* <-- Kích thước nhỏ mong muốn (mobile) */
 		height: 70px; /* <-- Kích thước nhỏ mong muốn (mobile) */
-		margin: 40px 0; /* Điều chỉnh margin nếu cần */
+		margin: 30px 0; /* Điều chỉnh margin nếu cần */
 	}
 
 	.mode-toggle {
@@ -714,7 +713,7 @@ header {
 
 	/* Kích thước font trong dropdown và modal */
 	.modal{
-		padding: 40px;
+		padding: 30px;
 	}
 	.modal-content {
 		padding: 6px 10px;
