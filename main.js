@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".mode-toggle").style.display = "flex";
         document.getElementById("function-container").style.display = "flex";
         document.body.classList.add('app-active');
+        setTimeout(() => {
+            btnReport.click();
+        }, 1);
     } else {
         // Người dùng chưa đăng nhập, hiển thị form đăng nhập
         document.getElementById("login-container").style.display = "block";
@@ -109,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.querySelector(".mode-toggle").style.display = "flex";
                     document.getElementById("function-container").style.display = "flex";
                     document.body.classList.add('app-active');
+                    btnReport.click();
                 } else {
                     // Nếu đăng nhập thất bại, hiển thị lỗi
                     showModal(data.message || "Sai tài khoản hoặc mật khẩu.", "error");
