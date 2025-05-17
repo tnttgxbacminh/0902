@@ -22,6 +22,7 @@ html {
 	/* Đặt kích thước font gốc để rem dễ tính toán hơn (tùy chọn) */
 	/* font-size: 10px; */ /* Nếu bật dòng này, 1rem = 10px */
 }
+
 body {
 	width: 100%;
 	font-family: "Roboto", sans-serif;
@@ -38,14 +39,14 @@ body {
 	line-height: 1.5; /* Cải thiện khả năng đọc */
 }
 
-*{
+* {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
 /* --- Hình ảnh trên cùng --- */
-	.top-image {
+.top-image {
 	/* Giảm kích thước mặc định */
 	width: 150px;
 	height: 150px;
@@ -96,6 +97,7 @@ body.app-active .top-image {
 	height: 25px;
 	/* Đặt filter mặc định (ví dụ: hiển thị ở dạng grayscale) */
 	filter: grayscale(100%) brightness(70%);
+	/*transition: filter 0.3s ease;*/
 }
 
 .nav-label {
@@ -104,6 +106,7 @@ body.app-active .top-image {
 	margin-top: 3px; /* Khoảng cách giữa icon và chữ */
 	color: var(--text-color);
 }
+
 .toggle-button:hover {
 	/* Giảm nhẹ hiệu ứng scale */
 	transform: scale(1.02);
@@ -115,6 +118,16 @@ body.app-active .top-image {
 
 .toggle-button.active .nav-icon {
 	filter: none; /* Hoặc bạn có thể dùng filter tinh chỉnh để đạt hiệu ứng mong muốn */
+}
+
+/* Styles cho indicator – thanh ngang màu xanh */
+.indicator {
+	position: absolute;
+	top: 0;
+	left: 0; /* Ban đầu nằm dưới nút đầu tiên */
+	width: 25%; /* Bằng 1/4 chiều rộng */
+	height: 3px; /* Độ dày của thanh indicator */
+	background-color: var(--primary-color);
 }
 
 
@@ -131,7 +144,6 @@ body.app-active .top-image {
 	opacity: 0;
 	visibility: hidden; /* Thêm visibility để ẩn hoàn toàn */
 	transform: translateY(10px); /* Đi xuống 10px để ẩn */
-	transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
 	position: absolute;
 	background-color: var(--card-bg); /* Đổi thành màu nền thẻ */
 	border: 1px solid var(--neutral-color); /* Thêm border nhẹ */
@@ -152,10 +164,6 @@ body.app-active .top-image {
 		pointer-events: auto;
 	}
 
-.fade-out { /* Class này có vẻ không cần thiết nếu dùng opacity/visibility */
-	opacity: 0;
-	visibility: hidden;
-}
 
 #status-dropdown .status-box {
 	/* Giảm padding và font-size */
@@ -196,44 +204,22 @@ body.app-active .top-image {
 	height: 100%;
 	max-width: 900px;
 	padding: 0 10px; /* Thêm padding ngang */
-
 }
 
 	.function-container .container {
 		flex: 1;
 		width: 100%; /* Nên để width tự động khi flex: 1 */
+		/* 
 		background-color: var(--card-bg);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Giảm nhẹ shadow */
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 		border-radius: 8px;
+		*/
 		padding: 10px; /* Giảm padding */
-		transition: opacity 0.5s ease;
 		/* Thêm overflow nếu nội dung có thể dài */
 		overflow-y: auto;
 		max-height: calc(100vh - 200px); /* Ví dụ giới hạn chiều cao */
 	}
 
-/* --- Trạng thái ẩn/hiện và animation --- */
-.hidden {
-	display: none;
-}
-
-.visible {
-	display: block;
-}
-
-.fade-in {
-	animation: fadeIn 0.5s ease forwards; /* Thêm forwards để giữ trạng thái cuối */
-}
-
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
-}
 
 /* --- Fullscreen QR Container --- */
 #qr-container.fullscreen {
@@ -289,35 +275,34 @@ video {
 	object-fit: cover;
 }
 
-
 /* --- Style cho Search & Report --- */
+/* Chỉ áp dụng cho input (query) */
 #search-query,
-#search-button,
-#report-query,
-#report-button {
-	width: 100%;
-	/* Giảm padding và font-size mặc định */
+#report-query {
+	width: 100%; /* Input chiếm hết chiều rộng tại vị trí của nó */
+	height: 35px;
 	padding: 10px;
-	margin-top: 10px;
-	font-size: 0.9rem; /* Giảm đáng kể */
-	border: 1px solid var(--neutral-color); /* Màu border nhất quán */
+	margin-top: 0;
+	margin-bottom: 15px;
+	font-size: 1rem;
+	border: 1px solid var(--neutral-color);
 	border-radius: 5px;
 }
-	#search-query:focus,
-	#report-query:focus {
-		border-color: var(--primary-color);
-		box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Thêm hiệu ứng focus */
-	}
 
+/* Áp dụng cho button */
 #search-button,
 #report-button {
+	/* Bỏ width: 100%; để giữ kích thước button nhỏ gọn */
+	height: 35px;
+	padding: 0 30px;
+	margin-top: 0;
+	margin-bottom: 15px;
 	background-color: var(--primary-color);
 	color: #fff;
 	border: none;
+	border-radius: 5px;
 	cursor: pointer;
-	transition: background-color 0.3s ease, transform 0.2s ease;
-	/* Thêm min-height để đảm bảo dễ bấm */
-	display: flex; /* Cho phép căn giữa icon/spinner nếu có */
+	display: flex;
 	align-items: center;
 	justify-content: center;
 }
@@ -325,8 +310,40 @@ video {
 	#search-button:hover,
 	#report-button:hover {
 		background-color: var(--primary-dark);
-		transform: scale(1.02); /* Giữ nguyên hoặc bỏ nếu không cần */
+		transform: scale(1.02);
 	}
+
+#search-query:focus,
+#report-query:focus {
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.input-group {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+	.input-group input {
+		flex: 1; /* Input mở rộng chiếm không gian còn lại */
+		margin-top: 0; /* Bỏ margin top nếu bạn muốn căn chỉnh theo hàng */
+	}
+
+	.input-group button {
+		margin-left: 5px; /* Khoảng cách nhỏ giữa input và button */
+		margin-top: 0; /* Bỏ margin top để căn hàng */
+		width: auto; /* Đảm bảo button không bị mở rộng */
+	}
+
+
+	.input-group button img {
+		width: 20px;
+		height: 20px;
+		display: block;
+		filter: brightness(0) invert(1);
+	}
+
 
 /* --- Bảng (Table) --- */
 /* Bọc table trong div.table-responsive */
@@ -335,7 +352,7 @@ video {
 	max-width: 100%;
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
-	margin-top: 15px;
+	margin-top: 0;
 	border: 1px solid var(--neutral-color); /* Thêm border cho container */
 	border-radius: 5px;
 	overflow: hidden;
@@ -347,7 +364,6 @@ table {
 	border-collapse: collapse;
 	background-color: #fff;
 	font-size: 0.9rem; /* Giảm nhẹ font chữ bảng */
-	margin-top: 10px; /* Bỏ margin khi đã có ở .table-responsive */
 }
 
 th,
@@ -380,7 +396,6 @@ th {
 	border: 1px solid var(--neutral-color);
 	border-radius: 4px;
 	cursor: pointer;
-	transition: background-color 0.2s ease, border-color 0.2s ease;
 	margin: auto;
 	display: block;
 	vertical-align: middle; /* Thêm để căn chỉnh tốt hơn nếu inline */
@@ -442,6 +457,7 @@ th {
 	align-items: center;
 	justify-content: center;
 	margin-top: 13px;
+	margin-bottom: 10px;
 }
 
 	.confirm-attendance-btn:hover {
@@ -461,7 +477,6 @@ th {
 	align-items: flex-start;
 	opacity: 0;
 	visibility: hidden;
-	transition: opacity 0.3s ease, visibility 0.2s ease;
 	z-index: 1000;
 	padding: 30px;
 }
@@ -504,12 +519,11 @@ th {
 		color: var(--text-color);
 		/* border-left: 5px solid var(--error-color); */
 	}
+
 	.modal-content.status {
-		color: var(--warning-color);
+		color: var(--text-color);
 		/* border-left: 5px solid var(--error-color); */
 	}
-
-
 
 .modal-close {
 	position: absolute;
@@ -589,9 +603,12 @@ header {
 	max-width: 900px;
 	padding: 20px 10px;
 	text-align: center;
+	/*
 	background: var(--card-bg);
 	border-radius: 8px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	*/
+
 	transform: translate(-50%, -50%);
 }
 
@@ -635,7 +652,7 @@ header {
 @media (max-width: 600px) {
 	body {
 		font-size: 0.95rem; /* Có thể giảm nhẹ font gốc trên mobile */
-		width:100%;
+		width: 100%;
 	}
 
 	.top-image {
@@ -648,20 +665,22 @@ header {
 	body.app-active .top-image {
 		width: 70px; /* <-- Kích thước nhỏ mong muốn (mobile) */
 		height: 70px; /* <-- Kích thước nhỏ mong muốn (mobile) */
-		margin: 30px 0; /* Điều chỉnh margin nếu cần */
+		margin-top: 40px;
+		margin-bottom: 30px;
 	}
 
 	.mode-toggle {
 		width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-		height: 45px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
+		height: 52px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
 	}
+
 	.nav-icon {
-		width: 22px;
-		height: 22px;
+		width: 25px;
+		height: 25px;
 	}
 
 	.nav-label {
-		font-size: 0.55rem;
+		font-size: 0.58rem;
 		margin-top: 3px; /* Khoảng cách giữa icon và chữ */
 	}
 
@@ -669,6 +688,7 @@ header {
 		max-width: 100%;
 		padding: 0 16px; /* Giữ padding ngang */
 	}
+
 	.login-container {
 		max-width: 100%;
 		padding: 0 10px; /* Giữ padding ngang */
@@ -696,9 +716,16 @@ header {
 		}
 
 	#search-query,
+	#report-query {
+		height: 35px;
+	}
+
 	#search-button,
-	#report-query,
-	#report-button,
+	#report-button {
+		height: 35px;
+		padding: 0 20px;
+	}
+
 	.login-container input,
 	.login-container button {
 		/* Đảm bảo font đủ lớn để đọc */
@@ -713,7 +740,7 @@ header {
 
 	/* Kích thước font trong dropdown và modal */
 	.modal{
-		padding: 30px;
+		padding: 40px;
 	}
 	.modal-content {
 		padding: 6px 10px;
@@ -724,16 +751,10 @@ header {
 			font-size: 1rem;
 		}
 
-	/* Điều chỉnh bảng */
-	.table-responsive {
-		margin-top: 10px;
-	}
-
 	table {
-		table-layout:fixed;
+		table-layout: fixed;
 		width: 100%;
 		font-size: 0.75rem; /* Giảm font bảng thêm */
-		margin-top: 10px;
 	}
 
 	th, td {
@@ -756,7 +777,7 @@ header {
 	}
 
 	#search-results th:nth-child(1),
-	#search-results td:nth-child(1){
+	#search-results td:nth-child(1) {
 		display: none;
 	}
 	/* Đặt lại width cho các cột còn lại theo lớp đã gán cho báo cáo */
@@ -790,8 +811,6 @@ header {
 	#search-results th.col-14, #search-results td.col-14 {
 		width: 11.5% !important;
 	}
-
-
 
 	.pagination-btn {
 		font-size: 0.6rem;
