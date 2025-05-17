@@ -92,7 +92,7 @@ body.app-active .top-image {
 }
 
 .nav-icon {
-	width: 28px;
+	width: 25px;
 	height: 25px;
 	/* Đặt filter mặc định (ví dụ: hiển thị ở dạng grayscale) */
 	filter: grayscale(100%) brightness(70%);
@@ -656,13 +656,13 @@ header {
 		height: 48px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
 	}
 	.nav-icon {
-		width: 25px;
+		width: 22px;
 		height: 22px;
 	}
 
 	.nav-label {
 		font-size: 0.55rem;
-		margin-top: 2px; /* Khoảng cách giữa icon và chữ */
+		margin-top: 3px; /* Khoảng cách giữa icon và chữ */
 	}
 
 	.function-container {
