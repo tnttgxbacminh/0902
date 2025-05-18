@@ -573,26 +573,10 @@ th {
 	}
 }
 
-/* --- Fullscreen QR Container --- */
-#qr-container.fullscreen {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	margin: 0;
-	padding: 0;
-	background-color: #000;
-	z-index: 0;
-	border-radius: 0;
-}
-
-.top-image,
-header {
+.top-image {
 	position: relative;
 	z-index: 10;
 }
-
 
 /* --- Giao diện đăng nhập --- */
 .login-container {
