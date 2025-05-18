@@ -491,6 +491,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     .catch((fallbackErr) => {
                         console.error("Fallback: Lỗi khi khởi động camera mặc định:", fallbackErr);
                         showModal("Không truy cập được camera!", "error");
+                        if (loadingElem) {
+                            loadingElem.style.display = "flex";
+                        }                      
                     });
             });
     }
@@ -500,10 +503,6 @@ document.addEventListener("DOMContentLoaded", function () {
         qrContainer.style.display = "block";
         qrContainer.classList.add("fullscreen");
         const loadingElem = document.querySelector("#qr-scanner .loading");
-        if (loadingElem) {
-            loadingElem.style.display = "flex";
-            loadingElem.textContent = "Không truy cập được, vui lòng kiểm tra camera!";
-        }
         if (isScanning) {
             html5QrCode
                 .stop()
