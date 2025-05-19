@@ -461,42 +461,51 @@ document.addEventListener("DOMContentLoaded", function () {
             if (callback) callback();
         }, 500);
     }
-    function startCamera(loadingElem) {
-        const videoConstraints = { facingMode: "environment" };
-        const qrConfig = {
-            fps: 15,
-            videoConstraints: {
-                facingMode: "environment",
-                width: { ideal: 1920 },
-                height: { ideal: 1080 }
-            }
-        };
-        html5QrCode
-            .start(videoConstraints, qrConfig, onScanSuccess, onScanFailure)
-            .then(() => {
-                isScanning = true;
-                if (loadingElem) loadingElem.style.display = "none";
-                console.log("Camera bắt đầu quét mã QR với facingMode: 'environment'.");
-            })
-            .catch((err) => {
-                if (loadingElem) loadingElem.style.display = "flex";
-                showModal("Không truy cập được camera!", "error");
-                console.error("Lỗi khi khởi động camera với facingMode: 'environment':", err);
-                // Fallback: nếu không tìm được camera theo constraint, thử khởi động mặc định.
-                html5QrCode
-                    .start(null, qrConfig, onScanSuccess, onScanFailure)
-                    .then(() => {
-                        isScanning = true;
-                        if (loadingElem) loadingElem.style.display = "none";
-                        console.log("Fallback: Camera được khởi động mặc định.");
-                    })
-                    .catch((fallbackErr) => {
-                        console.error("Fallback: Lỗi khi khởi động camera mặc định:", fallbackErr);
-                        showModal("Không truy cập được camera!", "error");
-                        if (loadingElem) loadingElem.style.display = "flex";
+    
+    const qrConfig = {
+        fps: 15,
+        videoConstraints: {
+            facingMode: "environment",
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
+        }
+    };
+    
+      function startCamera(loadingElem) {
+          Html5Qrcode.getCameras()
+              .then((cameras) => {
+                  cameras.forEach((camera) => console.log(camera.label));
+                  if (cameras && cameras.length) {
+                    let rearCamera = cameras.find((camera) => {
+                      const label = camera.label.toLowerCase();
+                      return label.includes("environment");
                     });
-            });
-    }
+                      cameraId = rearCamera ? rearCamera.id : cameras[0].id;
+
+                      html5QrCode
+                          .start(cameraId, qrConfig, onScanSuccess, onScanFailure)
+                          .then(() => {
+                              isScanning = true;
+                              if (loadingElem) loadingElem.style.display = "none";
+                              console.log("Camera bắt đầu quét mã QR.");
+                          })
+                          .catch((err) => {
+                              console.error("Lỗi khi khởi động camera:", err);
+                              showModal("Không truy cập được camera!", "error");
+                          });
+                  } else {
+                      if (loadingElem) {
+                          loadingElem.style.display = "flex";
+                          loadingElem.textContent = "Không tìm thấy camera!";
+                      }
+                      showModal("Không tìm thấy camera!", "error");
+                  }
+              })
+              .catch((err) => {
+                  console.error("Lỗi lấy camera:", err);
+                  showModal("Không truy cập được camera!", "error");
+              });
+      }
     function showQRInterface() {
         searchContainer.style.display = "none";
         reportContainer.style.display = "none";
