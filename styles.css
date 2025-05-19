@@ -655,7 +655,7 @@ th {
 
 	.mode-toggle {
 		width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-		height: 52px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
+		height: 55px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
 	}
 
 	.nav-icon {
@@ -666,6 +666,8 @@ th {
 	.nav-label {
 		font-size: 0.58rem;
 		margin-top: 3px; /* Khoảng cách giữa icon và chữ */
+		margin-bottom: 5px;
+		
 	}
 
 	.function-container {
