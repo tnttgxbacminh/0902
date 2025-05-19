@@ -481,6 +481,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Camera bắt đầu quét mã QR với facingMode: 'environment'.");
         } catch (err) {
             showModal("Không truy cập được camera!", "error");
+            if (loadingElem) loadingElem.style.display = "flex";
             console.error("Lỗi khi khởi động camera với facingMode: 'environment':", err);
         }
     }
