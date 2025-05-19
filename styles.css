@@ -283,7 +283,7 @@ video {
 	height: 35px;
 	padding: 10px;
 	margin-top: 0;
-	margin-bottom: 5px;
+	margin-bottom: 15px;
 	font-size: 1rem;
 	border: 1px solid var(--neutral-color);
 	border-radius: 5px;
@@ -296,7 +296,7 @@ video {
 	height: 35px;
 	padding: 0 30px;
 	margin-top: 0;
-	margin-bottom: 5px;
+	margin-bottom: 15px;
 	background-color: var(--primary-color);
 	color: #fff;
 	border: none;
@@ -655,7 +655,7 @@ th {
 
 	.mode-toggle {
 		width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-		height: 58px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
+		height: 60px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
 	}
 
 	.nav-icon {
@@ -666,7 +666,7 @@ th {
 	.nav-label {
 		font-size: 0.58rem;
 		margin-top: 3px; /* Khoảng cách giữa icon và chữ */
-		margin-bottom: 8px;
+		margin-bottom: 10px;
 		
 	}
 
@@ -704,12 +704,14 @@ th {
 	#search-query,
 	#report-query {
 		height: 35px;
+		margin-bottom: 15px;
 	}
 
 	#search-button,
 	#report-button {
 		height: 35px;
 		padding: 0 20px;
+		margin-bottom: 5px;
 	}
 
 	.login-container input,
