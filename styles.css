@@ -220,7 +220,6 @@ body.app-active .top-image {
 		max-height: calc(100vh - 200px); /* Ví dụ giới hạn chiều cao */
 	}
 
-
 /* --- Fullscreen QR Container --- */
 #qr-container.fullscreen {
 	position: fixed;
@@ -704,7 +703,7 @@ th {
 	#search-query,
 	#report-query {
 		height: 35px;
-		margin-bottom: 15px;
+		margin-bottom: 5px;
 	}
 
 	#search-button,
