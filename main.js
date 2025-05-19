@@ -472,41 +472,46 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
     
-      function startCamera(loadingElem) {
-          Html5Qrcode.getCameras()
-              .then((cameras) => {
-                  cameras.forEach((camera) => console.log(camera.label));
-                  if (cameras && cameras.length) {
+    function startCamera(loadingElem) {
+        Html5Qrcode.getCameras()
+            .then((cameras) => {
+                cameras.forEach((camera) => console.log(camera.label));
+                if (cameras && cameras.length) {
                     let rearCamera = cameras.find((camera) => {
-                      const label = camera.label.toLowerCase();
-                      return label.includes("environment");
+                        const label = camera.label.toLowerCase();
+                        return label.includes("back") ||
+                            label.includes("rear") ||
+                            label.includes("environment") ||
+                            label.includes("sau") ||
+                            label.includes("camera sau") ||
+                            label.includes("camera chính");
                     });
-                      cameraId = rearCamera ? rearCamera.id : cameras[0].id;
+                    cameraId = rearCamera ? rearCamera.id : cameras[0].id;
 
-                      html5QrCode
-                          .start(cameraId, qrConfig, onScanSuccess, onScanFailure)
-                          .then(() => {
-                              isScanning = true;
-                              if (loadingElem) loadingElem.style.display = "none";
-                              console.log("Camera bắt đầu quét mã QR.");
-                          })
-                          .catch((err) => {
-                              console.error("Lỗi khi khởi động camera:", err);
-                              showModal("Không truy cập được camera!", "error");
-                          });
-                  } else {
-                      if (loadingElem) {
-                          loadingElem.style.display = "flex";
-                          loadingElem.textContent = "Không tìm thấy camera!";
-                      }
-                      showModal("Không tìm thấy camera!", "error");
-                  }
-              })
-              .catch((err) => {
-                  console.error("Lỗi lấy camera:", err);
-                  showModal("Không truy cập được camera!", "error");
-              });
-      }
+                    html5QrCode
+                        .start(cameraId, qrConfig, onScanSuccess, onScanFailure)
+                        .then(() => {
+                            isScanning = true;
+                            if (loadingElem) loadingElem.style.display = "none";
+                            console.log("Camera bắt đầu quét mã QR.");
+                        })
+                        .catch((err) => {
+                            console.error("Lỗi khi khởi động camera:", err);
+                            showModal("Không truy cập được camera!", "error");
+                        });
+                } else {
+                    if (loadingElem) {
+                        loadingElem.style.display = "flex";
+                        loadingElem.textContent = "Không tìm thấy camera!";
+                    }
+                    showModal("Không tìm thấy camera!", "error");
+                }
+            })
+            .catch((err) => {
+                console.error("Lỗi lấy camera:", err);
+                showModal("Không truy cập được camera!", "error");
+            });
+    }
     function showQRInterface() {
         searchContainer.style.display = "none";
         reportContainer.style.display = "none";
