@@ -230,9 +230,10 @@ body.app-active .top-image {
 	margin: 0;
 	padding: 0;
 	background-color: #000;
-	z-index: 0;
+	z-index: 5;
 	border-radius: 0;
 }
+
 
 /* --- QR Scanner & Camera --- */
 /* (Giữ nguyên phần lớn, vì thường cần fullscreen) */
@@ -260,6 +261,7 @@ body.app-active .top-image {
 		background-color: rgba(0, 0, 0, 0.5);
 		font-size: 1rem;
 		color: #fff;
+		z-index: 0;
 	}
 /* Container chứa camera */
 #cameraContainer {
