@@ -463,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     
-    function startCamera(loadingElem) {
+    async function startCamera(loadingElem) {
         const videoConstraints = { facingMode: "environment" };
         const qrConfig = {
             fps: 15,
@@ -473,17 +473,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 height: { ideal: 720 }
             }
         };
-        html5QrCode
-            .start(videoConstraints, qrConfig, onScanSuccess, onScanFailure)
-            .then(() => {
-                isScanning = true;
-                if (loadingElem) loadingElem.style.display = "none";
-                console.log("Camera bắt đầu quét mã QR với facingMode: 'environment'.");
-            })
-            .catch((err) => {
-                showModal("Không truy cập được camera!", "error");
-                console.error("Lỗi khi khởi động camera với facingMode: 'environment':", err);
-            });
+
+        try {
+            await html5QrCode.start(videoConstraints, qrConfig, onScanSuccess, onScanFailure);
+            isScanning = true;
+            if (loadingElem) loadingElem.style.display = "none";
+            console.log("Camera bắt đầu quét mã QR với facingMode: 'environment'.");
+        } catch (err) {
+            showModal("Không truy cập được camera!", "error");
+            console.error("Lỗi khi khởi động camera với facingMode: 'environment':", err);
+        }
     }
     
     function showQRInterface() {
