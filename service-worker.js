@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'attendance-cache-v5';
+﻿const CACHE_NAME = 'attendance-cache-v6';
 const urlsToCache = [
     '/0902/',
     '/0902/index.html',
@@ -54,7 +54,6 @@ self.addEventListener('fetch', event => {
         })
     );
 });
-
 
 self.addEventListener('activate', event => {
     const cacheWhitelist = [CACHE_NAME];
