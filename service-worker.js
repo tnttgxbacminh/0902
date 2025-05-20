@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'attendance-cache-v6';
+﻿const CACHE_NAME = 'attendance-cache-v7';
 const urlsToCache = [
     '/0902/',
     '/0902/index.html',
@@ -103,5 +103,3 @@ self.addEventListener('notificationclick', function (event) {
             })
     );
 });
-
-
