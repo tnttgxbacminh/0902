@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     if (localStorage.getItem("loginTimestamp")) {
         // Người dùng đã đăng nhập, ẩn form đăng nhập và hiển thị giao diện chính
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Khai báo hàng đợi thông báo và biến kiểm tra trạng thái modal
     const notificationQueue = [];
     let isModalActive = false;
-    
+
     // Mở rộng hàm showModal để nhận thêm tham số persistent (mặc định là false)
     window.showModal = function (message, type, persistent = false) {
         notificationQueue.push({ message, type, persistent });
@@ -53,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!persistent) {
             let displayDuration;
             if (type === "status") {
-                displayDuration = 3000;
+                displayDuration = 2500;
             } else if (type === "error") {
                 displayDuration = 2000;
             } else {
@@ -70,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         // Nếu persistent === true, thì modal sẽ ở lại cho đến khi bạn tự ẩn nó (bằng cách gọi hàm)
     }
+    
     function hidePersistentModal() {
         const modal = document.getElementById("modal");
         if (modal.classList.contains("show")) {
@@ -136,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
+    
     // Các biến và khởi tạo
     const webAppUrl =
         "https://script.google.com/macros/s/AKfycbz1Pf6rxz0HVA7FA_GpDWm5NDdamvtC8-vNRM9MWwmhTa3Zo6ACKdrv8j9t7z-7l-wi/exec";
@@ -168,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
             request.onsuccess = () => resolve(request.result);
         });
     }
+    
     // Biến cờ cục bộ để kiểm tra xem đã gửi thông báo offline hay chưa (cho phiên này)
     let hasNotifiedOffline = false;
 
@@ -190,6 +194,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 showModal("Lỗi lưu điểm danh Offline.", "error");
             };
         }).catch(err => console.error(err));
+    }
+
+    function retryFetch(url, options, attempts = 3, delay = 2000) {
+        return new Promise((resolve, reject) => {
+            const attemptFetch = (currentAttempt) => {
+                fetch(url, options)
+                    .then(response => {
+                        // Với mode no-cors, response.status luôn là 0, nên ta coi thành công nếu promise resolve
+                        if (options.mode === 'no-cors' || response.ok) {
+                            resolve(response);
+                        } else {
+                            if (currentAttempt <= 1) {
+                                reject(new Error("HTTP error: " + response.status));
+                            } else {
+                                console.warn(`Fetch thất bại, còn ${currentAttempt - 1} lần thử lại...`);
+                                setTimeout(() => attemptFetch(currentAttempt - 1), delay);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        if (currentAttempt <= 1) {
+                            reject(error);
+                        } else {
+                            console.warn(`Fetch lỗi, còn ${currentAttempt - 1} lần thử lại...`, error);
+                            setTimeout(() => attemptFetch(currentAttempt - 1), delay);
+                        }
+                    });
+            };
+            attemptFetch(attempts);
+        });
     }
 
     function syncCombinedAttendanceRecords() {
@@ -228,12 +262,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 showModal('<span class="spinner"></span>\nĐang gửi dữ liệu điểm danh Offline...',"status", true);
 
                 // Gửi payload chung dạng JSON đến server
-                fetch(webAppUrl, {
+                retryFetch(webAppUrl, {
                     method: "POST",
                     mode: "no-cors",  // vẫn dùng no-cors
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ records: combinedRecords })
-                })
+                }, 3, 2000)
                     .then(() => {
                         // Với no-cors, nếu promise được resolve, ta coi request đã được gửi thành công
                         console.log("Gửi xong tất cả bản điểm danh Offline");
@@ -318,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
         runOnlineTasks();
     } else {
         offlineTimer = setTimeout(() => {
-            showModal("Bạn đang Offline!", "error");
+            showModal("Đang Offline!", "error");
         }, 2000);
     }
 
@@ -335,7 +369,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("offline", () => {
         // Khi mất mạng, hiển thị sau một khoảng delay
         offlineTimer = setTimeout(() => {
-            showModal("Bạn đang Offline!", "error");
+            showModal("Đang Offline!", "error");
         }, 2000);
     });
 
@@ -465,7 +499,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (callback) callback();
         }, 500);
     }
-
     
     async function startCamera(loadingElem) {
         const videoConstraints = { facingMode: "environment" };
@@ -570,28 +603,18 @@ document.addEventListener("DOMContentLoaded", function () {
             "&holy=" + encodeURIComponent(studentHoly) +
             "&name=" + encodeURIComponent(studentName);
 
-        fetch(webAppUrl, {
+        retryFetch(webAppUrl, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: body
-        })
+        }, 3, 2000)
             .then(response => {
                 if (!response.ok) throw new Error("HTTP error: " + response.status);
                 return response.text();
             })
             .catch(error => {
                 console.error("Lỗi gửi trực tuyến:", error);
-                // Nếu gửi lỗi, lưu bản ghi offline
-                const record = {
-                    id: studentId,
-                    type: currentAttendanceType,
-                    holy: studentHoly,
-                    name: studentName,
-                    recordType: "single",
-                    timestamp: Date.now()
-                };
-                saveAttendanceRecord(record);
-                showModal("Có lỗi khi gửi dữ liệu! Đã lưu Offline.", "error");
+                showModal("Có lỗi khi gửi dữ liệu!", "error");
             });
         // Hiển thị thông báo thành công ngay lập tức sau khi gọi fetch
         showModal(successMsg, "success");
@@ -648,7 +671,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
 
     btnQR.addEventListener("click", () => {
         currentMode = "qr";
@@ -827,6 +849,7 @@ document.addEventListener("DOMContentLoaded", function () {
             renderTablePage();
         };
 
+        // Nếu online thì ưu tiên gọi online search, còn nếu có lỗi hay không có kết quả thì fallback vào offline search.
         // Chỉ sử dụng offline search để tìm kiếm
         offlineSearch(query)
             .then((data) => {
@@ -981,12 +1004,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 try {
                     if (navigator.onLine) {
                         // Gửi dữ liệu qua fetch với mode no-cors để tránh preflight
-                        await fetch(webAppUrl, {
+                        await retryFetch(webAppUrl, {
                             method: "POST",
                             mode: "no-cors",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ records: records })
-                        });
+                        }, 3, 2000);
                         showModal("Điểm danh" + attendanceDescription + selectedIds.length + " thiếu nhi.", "success");
                     } else {
                         const batchRecord = {
