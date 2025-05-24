@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     if (localStorage.getItem("loginTimestamp")) {
         // Người dùng đã đăng nhập, ẩn form đăng nhập và hiển thị giao diện chính
