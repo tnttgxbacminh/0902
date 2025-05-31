@@ -17,12 +17,6 @@
 
 </head>
 <body>
-
-    <!-- Logo -->
-    <div class="top-image">
-        <img src="/0902/images/icon.png" alt="Logo" />
-    </div>
-
     <!-- Giao diện đăng nhập -->
     <div id="login-container" class="container login-container">
         <form id="login-form">
@@ -33,12 +27,12 @@
             <div id="login-spinner" class="spinner" style="display: none;"></div>
         </form>
     </div>
-
-    <!-- Dropdown trạng thái -->
-    <div id="status-dropdown">
-        <div id="status-di-le" class="status-box">Đi lễ</div>
-        <div id="status-di-hoc" class="status-box">Đi học</div>
-        <div id="status-khac" class="status-box">Khác</div>
+    
+    <div id="header-container" class="header-container">
+        <div class="top-image">
+            <img src="/0902/images/icon.png" alt="Logo" />
+        </div>
+        <div id="page-title" class="page-title"></div>
     </div>
 
     <!-- Container chức năng -->
@@ -52,7 +46,7 @@
         <div id="search-container" class="container" hidden fade-in>
             <div class="input-group">
                 <input type="text" id="search-query" placeholder="Nhập tên, ID hoặc lớp" />
-                <button id="search-button"><img src="images/search.png" alt="" /></button>
+                <button id="search-button"><img src="/0902/images/search.png" alt="" /></button>
             </div>
             <div id="search-results"></div>
         </div>
@@ -60,16 +54,89 @@
         <div id="report-container" class="container" hidden fade-in>
             <div class="input-group">
                 <input type="text" id="report-query" placeholder="Nhập tên, ID hoặc lớp" />
-                <button id="report-button"><img src="images/search.png" alt="" /></button>
+                <button id="report-button"><img src="/0902/images/search.png" alt="" /></button>
             </div>
             <div id="report-results"></div>
         </div>
     </section>
 
+        <!-- Dropdown trạng thái -->
+    <div id="status-dropdown" class="dropdown" style="display: none;">
+        <div class="dropdown-header">
+            <span class="dropdown-title"></span>
+            <span id="dropdown-close">&times;</span>
+        </div>
+
+        <div class="dropdown-body">
+            <div id="status-di-le" class="status-box">
+                <div class="icon-container">
+                    <img src="/0902/images/church.png" alt="Icon Đi lễ" class="dropdown-icon" />
+                </div>
+                <span>Thánh lễ</span>
+            </div>
+            <div id="status-di-hoc" class="status-box">
+                <div class="icon-container">
+                    <img src="/0902/images/faith.png" alt="Icon Đi học" class="dropdown-icon" />
+                </div>
+                <span>Giáo lý</span>
+            </div>
+            <div id="status-khac" class="status-box">
+                <div class="icon-container">
+                    <img src="/0902/images/confession.png" alt="Icon Khác" class="dropdown-icon" />
+                </div>
+                <span>Thống hối</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dropdown dành cho Toggle Report -->
+    <div id="report-dropdown" class="dropdown" style="display: none;">
+        <div class="dropdown-header">
+            <span class="dropdown-title">Tìm kiếm</span>
+            <span id="report-close">&times;</span>
+        </div>
+
+        <div class="dropdown-body">
+            <div id="report-btn" class="status-box">
+                <div class="icon-container">
+                    <img src="/0902/images/report.png" alt="Report" class="dropdown-icon" />
+                </div>
+                <span>Thống kê</span>
+            </div>
+            <div id="info-btn" class="status-box">
+                <div class="icon-container">
+                    <img src="/0902/images/info.png" alt="Info" class="dropdown-icon" />
+                </div>
+                <span>Thông tin</span>
+            </div>
+            <!--
+            <div id="point-btn" class="status-box">
+                <div class="icon-container">
+                    <img src="/0902/images/point.png" alt="Point" class="dropdown-icon" />
+                </div>
+                <span>Point</span>
+            </div>
+            -->
+        </div>
+    </div>
+
+    <!-- Container chứa toàn bộ nội dung -->
+    <div id="info-container" style="display: none;">
+        <!-- Header nằm trong container nhưng sẽ không cuộn đi -->
+        <div class="info-header">
+            <button id="back-button">&lt;</button>
+            <h1>Thông tin thiếu nhi</h1>
+        </div>
+        <!-- Phần nội dung chính có thể cuộn -->
+        <div class="info-wrapper">
+            <!-- Các card thông tin sẽ được thêm vào đây khi render -->
+        </div>
+    </div>
+    
     <!-- Nút chuyển đổi chế độ -->
     <section class="mode-toggle" style="display: none;">
         <button id="toggle-search" class="toggle-button">
-            <img src="/0902/images/search.png" alt="Search" class="nav-icon">
+            <img src="/0902/images/check.png" alt="Search" class="nav-icon">
             <span class="nav-label">Điểm danh</span>
         </button>
         <button id="toggle-qr" class="toggle-button">
@@ -81,8 +148,8 @@
             <span class="nav-label">Nghỉ phép</span>
         </button>
         <button id="toggle-report" class="toggle-button">
-            <img src="/0902/images/report.png" alt="Report" class="nav-icon">
-            <span class="nav-label">Kết quả</span>
+            <img src="/0902/images/search.png" alt="Report" class="nav-icon">
+            <span class="nav-label">Tìm kiếm</span>
         </button>
         <div class="indicator"></div>
     </section>
