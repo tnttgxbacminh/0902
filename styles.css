@@ -99,6 +99,7 @@ body.app-active .header-container {
 	display: flex;
 	justify-content: space-around; /* Phân bố đều các icon */
 	align-items: center;
+	z-index:950;
 }
 
 .toggle-button {
