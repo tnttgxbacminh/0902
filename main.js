@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.classList.add('app-active');
         setTimeout(() => {
             btnReport.click();
+            document.getElementById("report-btn").click();
+
         }, 1);
 
     } else {
@@ -70,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         // Nếu persistent === true, thì modal sẽ ở lại cho đến khi bạn tự ẩn nó (bằng cách gọi hàm)
     }
-    
+
     function hidePersistentModal() {
         const modal = document.getElementById("modal");
         if (modal.classList.contains("show")) {
@@ -120,6 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("function-container").style.display = "flex";
                     document.body.classList.add('app-active');
                     btnReport.click();
+                    document.getElementById("report-btn").click();
+
                 } else {
                     // Nếu đăng nhập thất bại, hiển thị lỗi
                     showModal(data.message || "Sai tài khoản hoặc mật khẩu.", "error");
@@ -137,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-    
+
     // Các biến và khởi tạo
     const webAppUrl =
         "https://script.google.com/macros/s/AKfycbz1Pf6rxz0HVA7FA_GpDWm5NDdamvtC8-vNRM9MWwmhTa3Zo6ACKdrv8j9t7z-7l-wi/exec";
@@ -170,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
             request.onsuccess = () => resolve(request.result);
         });
     }
-    
+
     // Biến cờ cục bộ để kiểm tra xem đã gửi thông báo offline hay chưa (cho phiên này)
     let hasNotifiedOffline = false;
 
@@ -258,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 // Hiển thị thông báo “Đang gửi dữ liệu...” có spinner
-                showModal('<span class="spinner"></span>\nĐang gửi dữ liệu điểm danh Offline...',"status", true);
+                showModal('<span class="spinner"></span>\nĐang gửi dữ liệu điểm danh Offline...', "status", true);
 
                 // Gửi payload chung dạng JSON đến server
                 retryFetch(webAppUrl, {
@@ -414,20 +418,46 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function updatePageTitle(newTitle) {
+        const pageTitle = document.getElementById("page-title");
+        if (pageTitle) {
+            pageTitle.textContent = newTitle;
+        }
+    }
     // ---------------------
     // XỬ LÝ DROPDOWN TRẠNG THÁI
     // ---------------------
-    function showStatusDropdown(anchorElement) {
-        const dropdown = document.getElementById("status-dropdown");
-        dropdown.style.display = "block";
-        const rect = anchorElement.getBoundingClientRect();
-        // Thay vì dùng `top` ta sẽ sử dụng `bottom`
-        dropdown.style.bottom = (window.innerHeight - rect.top) + "px";
-        dropdown.style.left = rect.left + window.scrollX + "px";
-        setTimeout(() => {
-            dropdown.classList.add("show");
-        }, 10);
+    function updateDropdownHeader(newHeaderText) {
+        const headerTitle = document.querySelector('.dropdown-title');
+        if (headerTitle) {
+            headerTitle.textContent = newHeaderText;
+        }
     }
+    // Sự kiện đóng dropdown khi nhấn X
+    document.getElementById("dropdown-close").addEventListener("click", function () {
+        const dropdown = document.getElementById("status-dropdown");
+        // Thêm lớp hidden để ẩn dropdown (với hiệu ứng chuyển động)
+        dropdown.classList.add("hidden");
+        // Nếu bạn muốn sau hiệu ứng xong ẩn hoàn toàn, bạn có thể sử dụng setTimeout để thay đổi display
+        dropdown.style.display = "none";
+    });
+
+    document.getElementById("report-close").addEventListener("click", function () {
+        const reportDropdown = document.getElementById("report-dropdown");
+        reportDropdown.classList.add("hidden");
+        // Sau một khoảng thời gian cho hiệu ứng chuyển động, ẩn hoàn toàn dropdown
+        reportDropdown.style.display = "none";
+    });
+
+    function showStatusDropdown() {
+        const dropdown = document.getElementById("status-dropdown");
+        // Đảm bảo dropdown hiển thị theo kiểu flex
+        dropdown.style.display = "flex";
+        dropdown.classList.remove("hidden");
+        // Nếu cần, thêm hiệu ứng show (ví dụ: thêm class "show")
+        dropdown.classList.add("show");
+    }
+
     function hideStatusDropdown() {
         const dropdown = document.getElementById("status-dropdown");
         dropdown.classList.remove("show");
@@ -435,6 +465,13 @@ document.addEventListener("DOMContentLoaded", function () {
             dropdown.style.display = "none";
         }, 300);
     }
+
+    const attendanceTypeName = {
+        "di-le": "thánh lễ",
+        "di-hoc": "giáo lý",
+        "khac": "thống hối"
+    };
+
     function onStatusSelected(type) {
         currentAttendanceType = type;
         document
@@ -442,6 +479,19 @@ document.addEventListener("DOMContentLoaded", function () {
             .forEach((el) => el.classList.remove("active"));
         document.getElementById("status-" + type).classList.add("active");
         hideStatusDropdown();
+
+        // Xác định tiêu đề dựa vào mode hiện hành
+        let headerText = "";
+        if (currentMode === "qr") {
+            headerText = `Quét QR ${attendanceTypeName[type] || ""}`;
+        } else if (currentMode === "search") {
+                    // Kiểm tra nếu toggle off active, thay đổi tiền tố thành "Nghỉ phép"
+        const prefix = btnOff.classList.contains("active") ? "Nghỉ phép" : "Điểm danh";
+        headerText = `${prefix} ${attendanceTypeName[type] || ""}`;
+        }
+
+        updatePageTitle(headerText);
+
         if (currentMode === "qr") {
             showQRInterface();
         } else if (currentMode === "search") {
@@ -498,7 +548,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (callback) callback();
         }, 500);
     }
-    
+
     async function startCamera(loadingElem) {
         const videoConstraints = { facingMode: "environment" };
         const qrConfig = {
@@ -514,19 +564,31 @@ document.addEventListener("DOMContentLoaded", function () {
             await html5QrCode.start(videoConstraints, qrConfig, onScanSuccess, onScanFailure);
             isScanning = true;
             if (loadingElem) loadingElem.style.display = "none";
+            // Sau khi camera được khởi động thành công, chuyển màu tiêu đề thành trắng
+            const pageTitle = document.getElementById("page-title");
+            if (pageTitle) {
+                pageTitle.style.color = "#ffffff";
+            }
             console.log("Camera bắt đầu quét mã QR với facingMode: 'environment'.");
         } catch (err) {
             showModal("Không truy cập được camera!", "error");
             console.error("Lỗi khi khởi động camera với facingMode: 'environment':", err);
         }
     }
-    
+
     function showQRInterface() {
         searchContainer.style.display = "none";
         reportContainer.style.display = "none";
         qrContainer.style.display = "block";
         qrContainer.classList.add("fullscreen");
         const loadingElem = document.querySelector("#qr-scanner .loading");
+
+        // Đặt màu tiêu đề là trắng
+        const pageTitle = document.getElementById("page-title");
+        if (pageTitle) {
+            pageTitle.style.color = "";
+        }
+
         if (isScanning) {
             html5QrCode
                 .stop()
@@ -584,7 +646,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Nếu offline: lưu bản ghi vào IndexedDB
             const record = {
                 id: studentId,
-                type: currentAttendanceType, 
+                type: currentAttendanceType,
                 holy: studentHoly,
                 name: studentName,
                 recordType: "single",
@@ -621,7 +683,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // ---------------------
     // EVENT LISTENERS CHUYỂN ĐỔI GIAO DIỆN
     // ---------------------
-    
+
     const toggleButtons = document.querySelectorAll(".toggle-button");
     const indicator = document.querySelector(".indicator");
 
@@ -637,7 +699,7 @@ document.addEventListener("DOMContentLoaded", function () {
             indicator.style.left = (index * 25) + "%";
         });
     });
-    
+
     const btnQR = document.getElementById("toggle-qr");
     const btnSearch = document.getElementById("toggle-search");
     const btnReport = document.getElementById("toggle-report");
@@ -645,6 +707,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const qrContainer = document.getElementById("qr-container");
     const searchContainer = document.getElementById("search-container");
     const reportContainer = document.getElementById("report-container");
+    const infoContainer = document.getElementById("info-container");
 
     const searchInput = document.getElementById("search-query");
     const reportInput = document.getElementById("report-query");
@@ -685,9 +748,20 @@ document.addEventListener("DOMContentLoaded", function () {
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
         showStatusDropdown(btnQR);
+        updateDropdownHeader("Quét QR");
+        updatePageTitle("Quét QR");
+
+        // Reset màu tiêu đề về mặc định (ví dụ màu đen hoặc màu cũ ban đầu)
+        const pageTitle = document.getElementById("page-title");
+        if (pageTitle) {
+            pageTitle.style.color = ""; // hoặc màu cũ bạn mong muốn
+        }
+
+
         qrContainer.style.display = "none";
         searchContainer.style.display = "none";
         reportContainer.style.display = "none";
+        infoContainer.style.display = "none";
     });
     btnSearch.addEventListener("click", () => {
         currentMode = "search";
@@ -703,6 +777,14 @@ document.addEventListener("DOMContentLoaded", function () {
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
         showStatusDropdown(btnSearch);
+        updateDropdownHeader("Điểm danh");
+        updatePageTitle("Điểm danh");
+
+        const pageTitle = document.getElementById("page-title");
+        if (pageTitle) {
+            pageTitle.style.color = ""; // hoặc màu cũ bạn mong muốn
+        }
+
         if (isScanning) {
             html5QrCode
                 .stop()
@@ -718,6 +800,7 @@ document.addEventListener("DOMContentLoaded", function () {
         qrContainer.style.display = "none";
         searchContainer.style.display = "none";
         reportContainer.style.display = "none";
+        infoContainer.style.display = "none";
         fadeIn(searchContainer);
     });
 
@@ -737,6 +820,14 @@ document.addEventListener("DOMContentLoaded", function () {
             .forEach((el) => el.classList.remove("active"));
         // Có thể gọi thêm hàm showStatusDropdown nếu bạn muốn dropdown xuất hiện với nút toggle-off
         showStatusDropdown(btnOff);
+        updateDropdownHeader("Nghỉ phép");
+        updatePageTitle("Nghỉ phép");
+
+        const pageTitle = document.getElementById("page-title");
+        if (pageTitle) {
+            pageTitle.style.color = ""; // hoặc màu cũ bạn mong muốn
+        }
+
         // Nếu đang quét QR thì dừng
         if (isScanning) {
             html5QrCode.stop()
@@ -752,6 +843,7 @@ document.addEventListener("DOMContentLoaded", function () {
         qrContainer.style.display = "none";
         searchContainer.style.display = "none";
         reportContainer.style.display = "none";
+        infoContainer.style.display = "none";
         // Hiển thị giao diện tìm kiếm
         fadeIn(searchContainer);
     });
@@ -767,8 +859,19 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-results").innerHTML = "";
         qrContainer.style.display = "none";
         searchContainer.style.display = "none";
-        reportContainer.style.display = "block";
-        fadeIn(reportContainer);
+        reportContainer.style.display = "none";
+        infoContainer.style.display = "none";
+
+        updatePageTitle("Tìm kiếm");
+
+        const pageTitle = document.getElementById("page-title");
+        if (pageTitle) {
+            pageTitle.style.color = ""; // hoặc màu cũ bạn mong muốn
+        }
+
+        // Hiển thị dropdown báo cáo (có id "report-dropdown")
+        const reportDropdown = document.getElementById("report-dropdown");
+        reportDropdown.style.display = "flex";
         if (isScanning) {
             html5QrCode
                 .stop()
@@ -781,6 +884,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         }
     });
+
+    // Lựa chọn Report – giao diện báo cáo cũ
+    document.getElementById("report-btn").addEventListener("click", () => {
+        currentMode = "report";
+        document.getElementById("report-dropdown").style.display = "none";
+        reportContainer.style.display = "block";
+        fadeIn(reportContainer);
+        updatePageTitle("Kết quả điểm danh");
+
+    });
+
+    // Lựa chọn Info – dùng giao diện search với chức năng tìm kiếm từ sheet "base"
+    document.getElementById("info-btn").addEventListener("click", () => {
+        currentMode = "info";
+        document.getElementById("report-dropdown").style.display = "none";
+        // Đảm bảo reset kết quả tìm kiếm cũ
+        document.getElementById("search-results").innerHTML = "";
+        // Hiển thị container search (sử dụng giao diện search cũ)
+        searchContainer.style.display = "block";
+        fadeIn(searchContainer);
+        updatePageTitle("thông tin");
+
+    });
+
+    // Lựa chọn Point – hiển thị thông báo hoặc xử lý riêng (ví dụ: tạm thông báo chưa cập nhật)
+    /*
+    document.getElementById("point-btn").addEventListener("click", () => {
+        currentMode = "point";
+        document.getElementById("report-dropdown").style.display = "none";
+        showModal("Chức năng Point chưa được cập nhật", "normal");
+    });
+    */
 
     const fixedRowsPerPage = calculateRowsPerPage();
     function calculateRowsPerPage() {
@@ -820,46 +955,227 @@ document.addEventListener("DOMContentLoaded", function () {
     // EVENT LISTENER TÌM KIẾM (SEARCH)
     // ---------------------
     document.getElementById("search-button").addEventListener("click", function () {
+        // Xoá cache tìm kiếm trước đó (nếu cần)
         searchCache.clear();
         const query = document.getElementById("search-query").value.trim();
         if (!query) {
-            alert("Vui lòng nhập tên, ID hoặc lớp!");
+            alert("Vui lòng nhập từ khóa cần tìm!");
             return;
         }
         const resultsDiv = document.getElementById("search-results");
 
-        // Hiển thị loading
+        // Hiển thị giao diện loading
         resultsDiv.innerHTML = `
       <div style="text-align:center;">
         <div class="spinner"></div>
-        <p style="margin-top: 10px;font-size: 0.9rem;">Đang tìm kiếm thiếu nhi...</p>
+        <p style="margin-top: 10px;font-size: 0.9rem;">Đang tìm kiếm...</p>
       </div>`;
 
-        // Hàm xử lý kết quả (chung cho online và offline)
-        const processResults = (data) => {
-            if (!Array.isArray(data) || data.length === 0) {
-                resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy, vui lòng kiểm tra lại!</p>`;
-                return;
-            }
-            searchCache.set(query, data);
-            searchData = data;
-            currentPage = 1;
-            selectedStudents = {};
-            renderTablePage();
-        };
-
-        // Nếu online thì ưu tiên gọi online search, còn nếu có lỗi hay không có kết quả thì fallback vào offline search.
-        // Chỉ sử dụng offline search để tìm kiếm
-        offlineSearch(query)
-            .then((data) => {
-                processResults(data);
-            })
-            .catch((err) => {
-                console.error("Lỗi khi tìm kiếm offline:", err);
-                resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm dữ liệu!</p>`;
-            });
+        // Nếu đang ở chế độ Info, sử dụng hàm searchInfo() (hàm này cần bạn tự triển khai để lấy dữ liệu từ sheet "base")
+        if (currentMode === "info") {
+            searchInfo(query)
+                .then((data) => {
+                    if (!Array.isArray(data) || data.length === 0) {
+                        resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy thông tin, vui lòng kiểm tra lại!</p>`;
+                        return;
+                    }
+                    // Sau đó, render kết quả theo giao diện Info, kèm dòng header và nút quay lại tìm kiếm info.
+                    renderInfoPage(data);
+                })
+                .catch((err) => {
+                    console.error("Lỗi khi tìm kiếm thông tin:", err);
+                    resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm thông tin!</p>`;
+                });
+        } else {
+            // Nếu không phải ở chế độ info, gọi hàm offlineSearch (cho tìm kiếm điểm danh như cũ)
+            offlineSearch(query)
+                .then((data) => {
+                    if (!Array.isArray(data) || data.length === 0) {
+                        resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy, vui lòng kiểm tra lại!</p>`;
+                        return;
+                    }
+                    searchCache.set(query, data);
+                    searchData = data;
+                    currentPage = 1;
+                    selectedStudents = {};
+                    renderTablePage();
+                })
+                .catch((err) => {
+                    console.error("Lỗi khi tìm kiếm offline:", err);
+                    resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm dữ liệu!</p>`;
+                });
+        }
     });
 
+    function searchInfo(query) {
+        const url = webAppUrl + "?action=searchBase&q=" + encodeURIComponent(query) + "&t=" + new Date().getTime();
+        return fetch(url, { cache: "no-store" })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok: " + response.status);
+                }
+                return response.json();
+            });
+    }
+
+    const backButton = document.getElementById("back-button");
+
+    backButton.addEventListener("click", function () {
+        // infoContainer.innerHTML = "";
+        // hãy xoá nội dung của phần ".info-wrapper"
+        const wrapper = document.querySelector("#info-container .info-wrapper");
+        if (wrapper) {
+            wrapper.innerHTML = "";
+        }
+
+        // Reset lại ô nhập tìm kiếm nếu cần thiết
+        document.getElementById("search-query").value = "";
+        document.getElementById("search-results").innerHTML = "";
+
+        // Ẩn giao diện info và hiển thị lại giao diện tìm kiếm
+        infoContainer.style.display = "none";
+        searchContainer.style.display = "block";
+
+        // Sử dụng hàm fadeIn để chuyển sang giao diện tìm kiếm mượt mà
+        fadeIn(searchContainer);
+    });
+
+
+    function renderInfoPage(data) {
+        // Ẩn các container khác, nếu cần
+        document.getElementById("search-container").style.display = "none";
+        document.getElementById("report-container").style.display = "none";
+        document.getElementById("qr-container").style.display = "none";
+
+        // Lấy container chứa nội dung động
+        let wrapper = document.querySelector('#info-container .info-wrapper');
+
+        // Nếu wrapper đã tồn tại, làm trống nó
+        if (wrapper) {
+            wrapper.innerHTML = "";
+        } else {
+            // Nếu chưa tồn tại, tạo mới và append vào info-container
+            wrapper = document.createElement("div");
+            wrapper.className = "info-wrapper";
+            document.getElementById("info-container").appendChild(wrapper);
+        }
+
+        // Duyệt qua từng bản ghi trong data
+        data.forEach((record, index) => {
+
+            const orderNumber = index + 1;
+            // Mỗi bản ghi được hiển thị trong một thẻ "card"
+            const card = document.createElement("div");
+            card.className = "info-card";
+
+            // Hàng 1: Tên Thánh và Họ và Tên
+            const row1 = document.createElement("div");
+            row1.className = "info-row info-row-1";
+            // Giả sử thuộc tính của record: tenThanh và hoVaTen; thay đổi nếu dùng tên khác
+            row1.textContent = `${orderNumber}. ${record.tenThanh || ""} ${record.hoVaTen || ""}`;
+            card.appendChild(row1);
+
+            // Hàng 3: Lớp
+            const row3 = document.createElement("div");
+            row3.className = "info-row";
+
+            // Tạo cột cho ngày sinh
+            const col1 = document.createElement("div");
+            col1.className = "col";
+            col1.textContent = `Lớp: ${record.lop || ""}`;
+            row3.appendChild(col1);
+
+            // Tạo cột cho số điện thoại
+            const col2 = document.createElement("div");
+            col2.className = "col";
+            col2.textContent = `Ngày sinh: ${record.dob || ""}`;
+            row3.appendChild(col2);
+
+            card.appendChild(row3);
+
+            // Hàng 2: SDT
+            const row2 = document.createElement("div");
+            row2.className = "info-row info-row-2";
+            row2.textContent = `SĐT: ${record.sdt || ""}`;
+            card.appendChild(row2);
+
+            // Hàng 4: Tên cha và Tên mẹ
+            const row4 = document.createElement("div");
+            row4.className = "info-row info-row-4";
+            row4.textContent = `Bố: ${record.tenCha || ""}`;
+            card.appendChild(row4);
+
+            // Hàng 4: Tên cha và Tên mẹ
+            const row0 = document.createElement("div");
+            row0.className = "info-row info-row-0";
+            row0.textContent = `Mẹ: ${record.tenMe || ""}`;
+            card.appendChild(row0);
+
+            // Hàng 5: tình trạng
+            const row5 = document.createElement("div");
+            row5.className = "info-row info-row-5";
+            row5.textContent = `Tình trạng: ${record.trangThai|| ""}`;
+            card.appendChild(row5);
+
+            // Hàng 6: giao ho maso
+            const row6 = document.createElement("div");
+            row6.className = "info-row";
+
+            const col5 = document.createElement("div");
+            col5.className = "col";
+            col5.textContent = `Giáo họ: ${record.giaoho || ""}`;
+            row6.appendChild(col5);
+
+            const col6 = document.createElement("div");
+            col6.className = "col";
+            col6.textContent = `Mã số: ${record.maso || ""}`;
+            row6.appendChild(col6);
+
+            card.appendChild(row6);
+
+
+            // Hàng 7: giao ho maso
+            const row7 = document.createElement("div");
+            row7.className = "info-row";
+
+            const col7 = document.createElement("div");
+            col7.className = "col";
+            col7.textContent = `Rửa tội: ${record.ruatoi || ""}`;
+            row7.appendChild(col7);
+
+            const col8 = document.createElement("div");
+            col8.className = "col";
+            col8.textContent = `Rước lễ: ${record.xungtoi || ""}`;
+            row7.appendChild(col8);
+
+            card.appendChild(row7);
+
+
+            // Hàng 8: note
+            const row8 = document.createElement("div");
+            row8.className = "info-row";
+
+            const col9 = document.createElement("div");
+            col9.className = "col";
+            col9.textContent = `Thêm sức: ${record.themsuc || ""}`;
+            row8.appendChild(col9);
+
+            const col10 = document.createElement("div");
+            col10.className = "col";
+            col10.textContent = `Ghi chú: ${record.note || ""}`;
+            row8.appendChild(col10);
+
+            card.appendChild(row8);
+
+            // Thêm card vào container wrapper
+            wrapper.appendChild(card);
+        });
+        infoContainer.appendChild(wrapper);
+
+        // Hiển thị container info (chiếm toàn bộ màn hình)
+        infoContainer.style.display = "block";
+
+    }
     // ---------------------
     // HIỂN THỊ TABLE VÀ GỬI DỮ LIỆU BATCH
     // ---------------------
