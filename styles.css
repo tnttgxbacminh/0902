@@ -254,6 +254,7 @@ body.app-active .header-container {
 /* CSS cho phần header bên trong info-container */
 .info-header {
 	position: relative; /* Cho phép các phần tử con sử dụng absolute */
+	position: sticky; /* Dính lại ở đỉnh của container khi cuộn */
 	top: 0;
 	background-color: var(--card-bg);
 	padding: 10px 20px;
