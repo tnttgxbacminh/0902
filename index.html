@@ -58,6 +58,16 @@
             </div>
             <div id="report-results"></div>
         </div>
+
+        <!-- Container chứa toàn bộ nội dung -->
+        <div id="info-container" class="container" hidden fade-in>
+            <div class="input-group">
+                <input type="text" id="info-query" placeholder="Nhập tên, ID hoặc lớp" />
+                <button id="info-button"><img src="images/search.png" alt="" /></button>
+            </div>
+            <div id="info-wrapper"></div>
+        </div>
+        
     </section>
 
         <!-- Dropdown trạng thái -->
@@ -117,19 +127,6 @@
                 <span>Point</span>
             </div>
             -->
-        </div>
-    </div>
-
-    <!-- Container chứa toàn bộ nội dung -->
-    <div id="info-container" style="display: none;">
-        <!-- Header nằm trong container nhưng sẽ không cuộn đi -->
-        <div class="info-header">
-            <button id="back-button"><</button>
-            <h1>Thông tin thiếu nhi</h1>
-        </div>
-        <!-- Phần nội dung chính có thể cuộn -->
-        <div class="info-wrapper">
-            <!-- Các card thông tin sẽ được thêm vào đây khi render -->
         </div>
     </div>
     
