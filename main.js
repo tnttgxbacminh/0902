@@ -1028,6 +1028,10 @@ document.addEventListener("DOMContentLoaded", function () {
             wrapper.innerHTML = "";
         }
 
+        // Reset các biến toàn cục đã dùng để lưu trữ kết quả
+        searchData = [];
+        searchCache.clear();
+
         // Reset lại ô nhập tìm kiếm nếu cần thiết
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
