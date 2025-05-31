@@ -713,6 +713,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const reportInput = document.getElementById("report-query");
     const searchBtn = document.getElementById("search-button");
     const reportBtn = document.getElementById("report-button");
+    const infoInput = document.getElementById("info-query");
+    const infoBtn = document.getElementById("info-button");
 
     if (searchInput && searchBtn) {
         searchInput.addEventListener("keydown", function (e) {
@@ -734,6 +736,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    if (infoInput && infoBtn) {
+        infoInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                this.blur();
+                infoBtn.click();
+            }
+        });
+    }
+
     btnQR.addEventListener("click", () => {
         currentMode = "qr";
         btnQR.classList.add("active");
@@ -744,6 +756,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-results").innerHTML = "";
         document.getElementById("report-query").value = "";
         document.getElementById("report-results").innerHTML = "";
+
+        document.getElementById("info-wrapper").innerHTML = "";
         document
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
@@ -773,6 +787,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("report-results").innerHTML = "";
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
+
+        document.getElementById("info-wrapper").innerHTML = "";
         document
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
@@ -815,6 +831,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("report-results").innerHTML = "";
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
+
+        document.getElementById("info-wrapper").innerHTML = "";
         document
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
@@ -857,6 +875,9 @@ document.addEventListener("DOMContentLoaded", function () {
         hideStatusDropdown();
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
+
+        document.getElementById("info-wrapper").innerHTML = "";
+
         qrContainer.style.display = "none";
         searchContainer.style.display = "none";
         reportContainer.style.display = "none";
@@ -899,19 +920,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("info-btn").addEventListener("click", () => {
         currentMode = "info";
         document.getElementById("report-dropdown").style.display = "none";
-
-        const wrapper = document.querySelector("#info-container .info-wrapper");
-        if (wrapper) {
-            wrapper.innerHTML = "";
-        }
-
-        infoContainer.style.display = "none";
-        
-        // Đảm bảo reset kết quả tìm kiếm cũ
-        document.getElementById("search-results").innerHTML = "";
         // Hiển thị container search (sử dụng giao diện search cũ)
-        searchContainer.style.display = "block";
-        fadeIn(searchContainer);
+        infoContainer.style.display = "Block";
+        fadeIn(infoContainer);
         updatePageTitle("thông tin");
 
     });
@@ -963,14 +974,58 @@ document.addEventListener("DOMContentLoaded", function () {
     // EVENT LISTENER TÌM KIẾM (SEARCH)
     // ---------------------
     document.getElementById("search-button").addEventListener("click", function () {
-        // Xoá cache tìm kiếm trước đó (nếu cần)
         searchCache.clear();
         const query = document.getElementById("search-query").value.trim();
+        if (!query) {
+            alert("Vui lòng nhập tên, ID hoặc lớp!");
+            return;
+        }
+        const resultsDiv = document.getElementById("search-results");
+
+        // Hiển thị loading
+        resultsDiv.innerHTML = `
+      <div style="text-align:center;">
+        <div class="spinner"></div>
+        <p style="margin-top: 10px;font-size: 0.9rem;">Đang tìm kiếm thiếu nhi...</p>
+      </div>`;
+
+        // Hàm xử lý kết quả (chung cho online và offline)
+        const processResults = (data) => {
+            if (!Array.isArray(data) || data.length === 0) {
+                resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy, vui lòng kiểm tra lại!</p>`;
+                return;
+            }
+            searchCache.set(query, data);
+            searchData = data;
+            currentPage = 1;
+            selectedStudents = {};
+            renderTablePage();
+        };
+
+        // Nếu online thì ưu tiên gọi online search, còn nếu có lỗi hay không có kết quả thì fallback vào offline search.
+        // Chỉ sử dụng offline search để tìm kiếm
+        offlineSearch(query)
+            .then((data) => {
+                processResults(data);
+            })
+            .catch((err) => {
+                console.error("Lỗi khi tìm kiếm offline:", err);
+                resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm dữ liệu!</p>`;
+            });
+    });
+
+    // ---------------------
+    // EVENT LISTENER TÌM KIẾM (INFO)
+    // ---------------------
+    document.getElementById("info-button").addEventListener("click", function () {
+        // Xoá cache tìm kiếm trước đó (nếu cần)
+        searchCache.clear();
+        const query = document.getElementById("info-query").value.trim();
         if (!query) {
             alert("Vui lòng nhập từ khóa cần tìm!");
             return;
         }
-        const resultsDiv = document.getElementById("search-results");
+        const resultsDiv = document.getElementById("info-wrapper");
 
         // Hiển thị giao diện loading
         resultsDiv.innerHTML = `
@@ -978,41 +1033,20 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="spinner"></div>
         <p style="margin-top: 10px;font-size: 0.9rem;">Đang tìm kiếm...</p>
       </div>`;
+        searchInfo(query)
 
-        // Nếu đang ở chế độ Info, sử dụng hàm searchInfo() (hàm này cần bạn tự triển khai để lấy dữ liệu từ sheet "base")
-        if (currentMode === "info") {
-            searchInfo(query)
-                .then((data) => {
-                    if (!Array.isArray(data) || data.length === 0) {
-                        resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy thông tin, vui lòng kiểm tra lại!</p>`;
-                        return;
-                    }
-                    // Sau đó, render kết quả theo giao diện Info, kèm dòng header và nút quay lại tìm kiếm info.
-                    renderInfoPage(data);
-                })
-                .catch((err) => {
-                    console.error("Lỗi khi tìm kiếm thông tin:", err);
-                    resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm thông tin!</p>`;
-                });
-        } else {
-            // Nếu không phải ở chế độ info, gọi hàm offlineSearch (cho tìm kiếm điểm danh như cũ)
-            offlineSearch(query)
-                .then((data) => {
-                    if (!Array.isArray(data) || data.length === 0) {
-                        resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy, vui lòng kiểm tra lại!</p>`;
-                        return;
-                    }
-                    searchCache.set(query, data);
-                    searchData = data;
-                    currentPage = 1;
-                    selectedStudents = {};
-                    renderTablePage();
-                })
-                .catch((err) => {
-                    console.error("Lỗi khi tìm kiếm offline:", err);
-                    resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm dữ liệu!</p>`;
-                });
-        }
+            .then((data) => {
+                if (!Array.isArray(data) || data.length === 0) {
+                    resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy thông tin, vui lòng kiểm tra lại!</p>`;
+                    return;
+                }
+                // Sau đó, render kết quả theo giao diện Info, kèm dòng header và nút quay lại tìm kiếm info.
+                renderInfoPage(data);
+            })
+            .catch((err) => {
+                console.error("Lỗi khi tìm kiếm thông tin:", err);
+                resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm thông tin!</p>`;
+            });
     });
 
     function searchInfo(query) {
@@ -1032,43 +1066,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
     }
-
-    const backButton = document.getElementById("back-button");
-
-    backButton.addEventListener("click", function () {
-        // infoContainer.innerHTML = "";
-        // hãy xoá nội dung của phần ".info-wrapper"
-        const wrapper = document.querySelector("#info-container .info-wrapper");
-        if (wrapper) {
-            wrapper.innerHTML = "";
-        }
-
-        // Reset lại ô nhập tìm kiếm nếu cần thiết
-        document.getElementById("search-query").value = "";
-        document.getElementById("search-results").innerHTML = "";
-
-        // Reset các biến toàn cục đã dùng để lưu trữ kết quả
-        searchData = [];
-        searchCache.clear();
-
-
-        // Ẩn giao diện info và hiển thị lại giao diện tìm kiếm
-        infoContainer.style.display = "none";
-        searchContainer.style.display = "block";
-
-        // Sử dụng hàm fadeIn để chuyển sang giao diện tìm kiếm mượt mà
-        fadeIn(searchContainer);
-    });
-
-
     function renderInfoPage(data) {
+        const resultsDiv = document.getElementById("info-wrapper");
+        resultsDiv.innerHTML = "";
         // Ẩn các container khác, nếu cần
         document.getElementById("search-container").style.display = "none";
         document.getElementById("report-container").style.display = "none";
         document.getElementById("qr-container").style.display = "none";
 
         // Lấy container chứa nội dung động
-        let wrapper = document.querySelector('#info-container .info-wrapper');
+        let wrapper = document.querySelector('.info-wrapper');
 
         // Nếu wrapper đã tồn tại, làm trống nó
         if (wrapper) {
