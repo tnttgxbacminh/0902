@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             btnReport.click();
             document.getElementById("report-btn").click();
-            infoContainer.innerHTML = "";
 
         }, 1);
 
@@ -124,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.body.classList.add('app-active');
                     btnReport.click();
                     document.getElementById("report-btn").click();
-                    infoContainer.innerHTML = "";
 
                 } else {
                     // Nếu đăng nhập thất bại, hiển thị lỗi
