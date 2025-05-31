@@ -899,6 +899,14 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("info-btn").addEventListener("click", () => {
         currentMode = "info";
         document.getElementById("report-dropdown").style.display = "none";
+
+        const wrapper = document.querySelector("#info-container .info-wrapper");
+        if (wrapper) {
+            wrapper.innerHTML = "";
+        }
+
+        infoContainer.style.display = "none";
+        
         // Đảm bảo reset kết quả tìm kiếm cũ
         document.getElementById("search-results").innerHTML = "";
         // Hiển thị container search (sử dụng giao diện search cũ)
@@ -1011,10 +1019,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const url = webAppUrl + "?action=searchBase&q=" + encodeURIComponent(query) + "&t=" + new Date().getTime();
         return fetch(url, { cache: "no-store" })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok: " + response.status);
+                console.log("Response status:", response.status);
+                console.log("Content-Type:", response.headers.get("content-type"));
+                return response.text();
+            })
+            .then(text => {
+                console.log("Raw response text:", text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    throw new Error("Lỗi parse JSON: " + e.message);
                 }
-                return response.json();
             });
     }
 
@@ -1028,13 +1043,14 @@ document.addEventListener("DOMContentLoaded", function () {
             wrapper.innerHTML = "";
         }
 
+        // Reset lại ô nhập tìm kiếm nếu cần thiết
+        document.getElementById("search-query").value = "";
+        document.getElementById("search-results").innerHTML = "";
+
         // Reset các biến toàn cục đã dùng để lưu trữ kết quả
         searchData = [];
         searchCache.clear();
 
-        // Reset lại ô nhập tìm kiếm nếu cần thiết
-        document.getElementById("search-query").value = "";
-        document.getElementById("search-results").innerHTML = "";
 
         // Ẩn giao diện info và hiển thị lại giao diện tìm kiếm
         infoContainer.style.display = "none";
