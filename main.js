@@ -1053,12 +1053,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const url = webAppUrl + "?action=searchBase&q=" + encodeURIComponent(query) + "&t=" + new Date().getTime();
         return fetch(url, { cache: "no-store" })
             .then(response => {
-                console.log("Response status:", response.status);
-                console.log("Content-Type:", response.headers.get("content-type"));
                 return response.text();
             })
             .then(text => {
-                console.log("Raw response text:", text);
                 try {
                     return JSON.parse(text);
                 } catch (e) {
