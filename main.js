@@ -1,9 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const infoResults = document.getElementById("info-results");
-    if (infoResults) {
-        infoResults.innerHTML = "";
-    }
-
     if (localStorage.getItem("loginTimestamp")) {
         // Người dùng đã đăng nhập, ẩn form đăng nhập và hiển thị giao diện chính
         document.getElementById("login-container").style.display = "none";
@@ -932,6 +927,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("info-btn").addEventListener("click", () => {
         currentMode = "info";
         document.getElementById("report-dropdown").style.display = "none";
+        document.getElementById("search-results").innerHTML = "";
         document.getElementById("info-query").value = "";
         infoContainer.style.display = "Block";
         fadeIn(infoContainer);
@@ -1031,9 +1027,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // ---------------------
     document.getElementById("info-button").addEventListener("click", function () {
         // Xoá cache tìm kiếm trước đó (nếu cần)
-
-        searchCache.clear();
         document.getElementById("info-results").innerHTML = "";
+        searchCache.clear();
         const query = document.getElementById("info-query").value.trim();
         if (!query) {
             alert("Vui lòng nhập từ khóa cần tìm!");
@@ -1063,20 +1058,19 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
-    function searchInfo(query) {
-        const url = webAppUrl + "?action=searchBase&q=" + encodeURIComponent(query) + "&t=" + new Date().getTime();
-        return fetch(url, { cache: "no-store" })
-            .then(response => {
-                return response.text();
-            })
-            .then(text => {
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    throw new Error("Lỗi parse JSON: " + e.message);
-                }
-            });
-    }
+function searchInfo(query) {
+    const url = webAppUrl + "?action=searchBase&q=" + encodeURIComponent(query) + "&t=" + new Date().getTime();
+    return fetch(url, { cache: "no-store" })
+        .then(response => response.text())
+        .then(text => {
+            //console.log("Response from searchInfo:", text);
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                throw new Error("Lỗi parse JSON: " + e.message);
+            }
+        });
+}
     function renderInfoPage(data) {
 
         // Lấy phần tử chứa kết quả (theo HTML, đây là div có id "info-results")
@@ -1087,7 +1081,6 @@ document.addEventListener("DOMContentLoaded", function () {
         wrapper.className = "table-responsive";
         // Giới hạn chiều cao của vùng kết quả, ví dụ: chiều cao tối đa của vùng hiển thị
         wrapper.style.maxHeight = "calc(100vh-100px)";
-        wrapper.style.marginBottom = "70px";
         wrapper.style.overflowY = "auto"; // Cho phép cuộn dọc nếu vượt quá chiều cao
 
         // Duyệt qua từng record để tạo các "info-card"
