@@ -251,24 +251,13 @@ body.app-active .header-container {
 	margin: 10px;
 }
 
-
-/* Styles cho giao diện info */
-.info-wrapper {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
-	margin-bottom: 70px;
-	width: 100%;
-	max-width: 900px;
-}
-
 .info-card {
 	border: 1px solid var(--primary-color);
 	border-radius: 5px;
 	padding: 10px;
 	background-color: var(--card-bg);
+	margin:10px;
 }
-
 
 .info-row-1 {
 	font-weight: bold;
@@ -307,7 +296,7 @@ body.app-active .header-container {
 		padding: 10px; /* Giảm padding */
 		/* Thêm overflow nếu nội dung có thể dài */
 		overflow-y: auto;
-		max-height: calc(100vh - 200px); /* Ví dụ giới hạn chiều cao */
+		max-height: calc(100vh-100px); /* Ví dụ giới hạn chiều cao */
 	}
 
 /* --- Fullscreen QR Container --- */
