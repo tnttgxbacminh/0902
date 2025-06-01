@@ -757,7 +757,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("report-query").value = "";
         document.getElementById("report-results").innerHTML = "";
 
-        document.getElementById("info-wrapper").innerHTML = "";
+        document.getElementById("info-ressults").innerHTML = "";
         document
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
@@ -788,7 +788,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
 
-        document.getElementById("info-wrapper").innerHTML = "";
+        document.getElementById("info-results").innerHTML = "";
         document
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
@@ -832,7 +832,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
 
-        document.getElementById("info-wrapper").innerHTML = "";
+        document.getElementById("info-results").innerHTML = "";
         document
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
@@ -876,7 +876,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
 
-        document.getElementById("info-wrapper").innerHTML = "";
+        document.getElementById("info-results").innerHTML = "";
 
         qrContainer.style.display = "none";
         searchContainer.style.display = "none";
@@ -910,6 +910,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("report-btn").addEventListener("click", () => {
         currentMode = "report";
         document.getElementById("report-dropdown").style.display = "none";
+        infoContainer.style.display = "none";
+        document.getElementById("search-query").value = "";
+        document.getElementById("search-results").innerHTML = "";
+
+        document.getElementById("info-results").innerHTML = "";
         reportContainer.style.display = "block";
         fadeIn(reportContainer);
         updatePageTitle("Kết quả điểm danh");
@@ -920,7 +925,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("info-btn").addEventListener("click", () => {
         currentMode = "info";
         document.getElementById("report-dropdown").style.display = "none";
-        // Hiển thị container search (sử dụng giao diện search cũ)
         infoContainer.style.display = "Block";
         fadeIn(infoContainer);
         updatePageTitle("thông tin");
@@ -1019,13 +1023,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // ---------------------
     document.getElementById("info-button").addEventListener("click", function () {
         // Xoá cache tìm kiếm trước đó (nếu cần)
+
         searchCache.clear();
+        document.getElementById("info-results").innerHTML = "";
         const query = document.getElementById("info-query").value.trim();
         if (!query) {
             alert("Vui lòng nhập từ khóa cần tìm!");
             return;
         }
-        const resultsDiv = document.getElementById("info-wrapper");
+        const resultsDiv = document.getElementById("info-results");
 
         // Hiển thị giao diện loading
         resultsDiv.innerHTML = `
@@ -1064,52 +1070,39 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
     function renderInfoPage(data) {
-        const resultsDiv = document.getElementById("info-wrapper");
-        resultsDiv.innerHTML = "";
-        // Ẩn các container khác, nếu cần
-        document.getElementById("search-container").style.display = "none";
-        document.getElementById("report-container").style.display = "none";
-        document.getElementById("qr-container").style.display = "none";
+        // Lấy phần tử chứa kết quả (theo HTML, đây là div có id "info-results")
+        const resultsDiv = document.getElementById("info-results");
 
-        // Lấy container chứa nội dung động
-        let wrapper = document.querySelector('.info-wrapper');
+        // Tạo phần bọc ngoài kết quả với class "table-responsive" để cho vùng này cuộn
+        const wrapper = document.createElement("div");
+        wrapper.className = "table-responsive";
+        // Giới hạn chiều cao của vùng kết quả, ví dụ: chiều cao tối đa của vùng hiển thị
+        wrapper.style.maxHeight = "calc(100vh-100px)";
+        //wrapper.style.marginBottom = "70px";
+        wrapper.style.overflowY = "auto"; // Cho phép cuộn dọc nếu vượt quá chiều cao
 
-        // Nếu wrapper đã tồn tại, làm trống nó
-        if (wrapper) {
-            wrapper.innerHTML = "";
-        } else {
-            // Nếu chưa tồn tại, tạo mới và append vào info-container
-            wrapper = document.createElement("div");
-            wrapper.className = "info-wrapper";
-            document.getElementById("info-container").appendChild(wrapper);
-        }
-
-        // Duyệt qua từng bản ghi trong data
+        // Duyệt qua từng record để tạo các "info-card"
         data.forEach((record, index) => {
-
             const orderNumber = index + 1;
-            // Mỗi bản ghi được hiển thị trong một thẻ "card"
+            // Tạo thẻ card cho từng bản ghi
             const card = document.createElement("div");
             card.className = "info-card";
 
             // Hàng 1: Tên Thánh và Họ và Tên
             const row1 = document.createElement("div");
             row1.className = "info-row info-row-1";
-            // Giả sử thuộc tính của record: tenThanh và hoVaTen; thay đổi nếu dùng tên khác
             row1.textContent = `${orderNumber}. ${record.tenThanh || ""} ${record.hoVaTen || ""}`;
             card.appendChild(row1);
 
-            // Hàng 3: Lớp
+            // Hàng 3: Hiển thị lớp và ngày sinh (ví dụ)
             const row3 = document.createElement("div");
             row3.className = "info-row";
 
-            // Tạo cột cho ngày sinh
             const col1 = document.createElement("div");
             col1.className = "col";
             col1.textContent = `Lớp: ${record.lop || ""}`;
             row3.appendChild(col1);
 
-            // Tạo cột cho số điện thoại
             const col2 = document.createElement("div");
             col2.className = "col";
             col2.textContent = `Ngày sinh: ${record.dob || ""}`;
@@ -1117,7 +1110,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             card.appendChild(row3);
 
-            // Hàng 2: SDT
+            // Hàng 2: SĐT
             const row2 = document.createElement("div");
             row2.className = "info-row info-row-2";
             row2.textContent = `SĐT: ${record.sdt || ""}`;
@@ -1129,76 +1122,63 @@ document.addEventListener("DOMContentLoaded", function () {
             row4.textContent = `Bố: ${record.tenCha || ""}`;
             card.appendChild(row4);
 
-            // Hàng 4: Tên cha và Tên mẹ
             const row0 = document.createElement("div");
             row0.className = "info-row info-row-0";
             row0.textContent = `Mẹ: ${record.tenMe || ""}`;
             card.appendChild(row0);
 
-            // Hàng 5: tình trạng
+            // Hàng 5: Tình trạng
             const row5 = document.createElement("div");
             row5.className = "info-row info-row-5";
-            row5.textContent = `Tình trạng: ${record.trangThai|| ""}`;
+            row5.textContent = `Tình trạng: ${record.trangThai || ""}`;
             card.appendChild(row5);
 
-            // Hàng 6: giao ho maso
+            // Hàng 6: Giáo họ và Mã số
             const row6 = document.createElement("div");
             row6.className = "info-row";
-
             const col5 = document.createElement("div");
             col5.className = "col";
             col5.textContent = `Giáo họ: ${record.giaoho || ""}`;
             row6.appendChild(col5);
-
             const col6 = document.createElement("div");
             col6.className = "col";
             col6.textContent = `Mã số: ${record.maso || ""}`;
             row6.appendChild(col6);
-
             card.appendChild(row6);
 
-
-            // Hàng 7: giao ho maso
+            // Hàng 7: Rửa tội và Rước lễ
             const row7 = document.createElement("div");
             row7.className = "info-row";
-
             const col7 = document.createElement("div");
             col7.className = "col";
             col7.textContent = `Rửa tội: ${record.ruatoi || ""}`;
             row7.appendChild(col7);
-
             const col8 = document.createElement("div");
             col8.className = "col";
             col8.textContent = `Rước lễ: ${record.xungtoi || ""}`;
             row7.appendChild(col8);
-
             card.appendChild(row7);
 
-
-            // Hàng 8: note
+            // Hàng 8: Thêm sức và Ghi chú
             const row8 = document.createElement("div");
             row8.className = "info-row";
-
             const col9 = document.createElement("div");
             col9.className = "col";
             col9.textContent = `Thêm sức: ${record.themsuc || ""}`;
             row8.appendChild(col9);
-
             const col10 = document.createElement("div");
             col10.className = "col";
             col10.textContent = `Ghi chú: ${record.note || ""}`;
             row8.appendChild(col10);
-
             card.appendChild(row8);
 
-            // Thêm card vào container wrapper
+            // Thêm card này vào wrapper
             wrapper.appendChild(card);
         });
-        infoContainer.appendChild(wrapper);
 
-        // Hiển thị container info (chiếm toàn bộ màn hình)
-        infoContainer.style.display = "block";
-
+        // Xoá nội dung cũ và thêm wrapper chứa các info-card mới vào vùng "info-results"
+        resultsDiv.innerHTML = "";
+        resultsDiv.appendChild(wrapper);
     }
     // ---------------------
     // HIỂN THỊ TABLE VÀ GỬI DỮ LIỆU BATCH
