@@ -251,10 +251,6 @@ body.app-active .header-container {
 	margin: 10px;
 }
 
-#info-container {
-	padding-bottom: 60px;
-}
-
 .info-card {
 	border: 1px solid var(--primary-color);
 	border-radius: 5px;
@@ -441,7 +437,6 @@ video {
 	overflow: hidden;
 	max-height: calc(100vh - 200px); /* hoặc giá trị khác phù hợp */
 	overflow-y: auto;
-	margin-bottom:60px;
 }
 
 table {
