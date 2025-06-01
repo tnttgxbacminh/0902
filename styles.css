@@ -255,8 +255,7 @@ body.app-active .header-container {
 	border: 1px solid var(--primary-color);
 	border-radius: 5px;
 	padding: 10px;
-	background-color: var(--card-bg);
-	margin:10px;
+	margin:10px 0 10px 0;
 }
 
 .info-row-1 {
@@ -432,7 +431,6 @@ video {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
 	margin-top: 5px;
-	border: 1px solid var(--neutral-color); /* Thêm border cho container */
 	border-radius: 5px;
 	overflow: hidden;
 	max-height: calc(100vh - 200px); /* hoặc giá trị khác phù hợp */
