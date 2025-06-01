@@ -1042,35 +1042,29 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="spinner"></div>
         <p style="margin-top: 10px;font-size: 0.9rem;">Đang tìm kiếm...</p>
       </div>`;
-        searchInfo(query)
 
+        // Hàm xử lý kết quả (chung cho online và offline)
+        const processResults = (data) => {
+            if (!Array.isArray(data) || data.length === 0) {
+                resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy, vui lòng kiểm tra lại!</p>`;
+                return;
+            }
+            searchCache.set(query, data);
+            renderInfoPage(data);
+        };
+
+        // Nếu online thì ưu tiên gọi online search, còn nếu có lỗi hay không có kết quả thì fallback vào offline search.
+        // Chỉ sử dụng offline search để tìm kiếm
+        offlineSearch(query)
             .then((data) => {
-                if (!Array.isArray(data) || data.length === 0) {
-                    resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy thông tin, vui lòng kiểm tra lại!</p>`;
-                    return;
-                }
-                // Sau đó, render kết quả theo giao diện Info, kèm dòng header và nút quay lại tìm kiếm info.
-                renderInfoPage(data);
+                processResults(data);
             })
             .catch((err) => {
-                console.error("Lỗi khi tìm kiếm thông tin:", err);
-                resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm thông tin!</p>`;
+                console.error("Lỗi khi tìm kiếm offline:", err);
+                resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm dữ liệu!</p>`;
             });
     });
 
-function searchInfo(query) {
-    const url = webAppUrl + "?action=searchBase&q=" + encodeURIComponent(query) + "&t=" + new Date().getTime();
-    return fetch(url, { cache: "no-store" })
-        .then(response => response.text())
-        .then(text => {
-            //console.log("Response from searchInfo:", text);
-            try {
-                return JSON.parse(text);
-            } catch (e) {
-                throw new Error("Lỗi parse JSON: " + e.message);
-            }
-        });
-}
     function renderInfoPage(data) {
 
         // Lấy phần tử chứa kết quả (theo HTML, đây là div có id "info-results")
@@ -1093,7 +1087,7 @@ function searchInfo(query) {
             // Hàng 1: Tên Thánh và Họ và Tên
             const row1 = document.createElement("div");
             row1.className = "info-row info-row-1";
-            row1.textContent = `${orderNumber}. ${record.tenThanh || ""} ${record.hoVaTen || ""}`;
+            row1.textContent = `${orderNumber}. ${record.holyName || ""} ${record.fullName || ""}`;
             card.appendChild(row1);
 
             // Hàng 3: Hiển thị lớp và ngày sinh (ví dụ)
@@ -1102,7 +1096,7 @@ function searchInfo(query) {
 
             const col1 = document.createElement("div");
             col1.className = "col";
-            col1.textContent = `Lớp: ${record.lop || ""}`;
+            col1.textContent = `Lớp: ${record.birthDate || ""}`;
             row3.appendChild(col1);
 
             const col2 = document.createElement("div");
@@ -1367,40 +1361,34 @@ function searchInfo(query) {
             alert("Vui lòng nhập từ khóa để tìm kiếm!");
             return;
         }
+
+        // Kiểm tra kết nối mạng
+        if (!navigator.onLine) {
+            alert("Không có kết nối mạng. Vui lòng kết nối để tìm kiếm!");
+            return;
+        }
+
         const resultsDiv = document.getElementById("report-results");
         resultsDiv.innerHTML = `
         <div style="text-align:center;">
-          <div class="spinner"></div>
-          <p style="margin-top: 10px; font-size: 0.9rem;">Đang tìm kiếm kết quả...</p>
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Đang tìm kiếm kết quả...</p>
         </div>`;
 
         try {
-            let data = null;
-
-            // Nếu có mạng, thử gọi API tìm kiếm báo cáo online
-            if (navigator.onLine) {
-                data = await fetch(
-                    webAppUrl +
-                    "?action=search&q=" +
-                    encodeURIComponent(query) +
-                    "&mode=report&t=" +
-                    new Date().getTime(),
-                    {
-                        cache: "no-store",
-                    }
-                ).then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                });
-            }
-
-            // Nếu không có mạng hoặc fetch trả về lỗi (data null), chuyển sang offline search
-            if (!navigator.onLine || !data) {
-                console.log("Đang chuyển sang tìm kiếm offline do fetch thất bại hoặc không có mạng...");
-                data = await offlineSearch(query);
-            }
+            const data = await fetch(
+                webAppUrl +
+                "?action=search&q=" + encodeURIComponent(query) +
+                "&mode=report&t=" + new Date().getTime(),
+                {
+                    cache: "no-store",
+                }
+            ).then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            });
 
             if (data.error) {
                 resultsDiv.innerHTML = `<p style="color: var(--error-color);">${data.error}</p>`;
@@ -1417,20 +1405,7 @@ function searchInfo(query) {
             renderReportTable();
         } catch (error) {
             console.error("Lỗi tìm kiếm:", error);
-
-            // Trong trường hợp fetch bị lỗi, chuyển sang tìm kiếm offline
-            offlineSearch(query).then((data) => {
-                if (!data.length) {
-                    resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy, vui lòng kiểm tra lại.</p>`;
-                } else {
-                    reportData = data;
-                    currentReportPage = 1;
-                    renderReportTable();
-                }
-            }).catch((err) => {
-                console.error("Lỗi khi tìm kiếm offline:", err);
-                resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm dữ liệu offline.</p>`;
-            });
+            resultsDiv.innerHTML = `<p style="color: var(--error-color);">Có lỗi khi tìm kiếm dữ liệu báo cáo.</p>`;
         }
     });
 
