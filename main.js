@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.classList.add('app-active');
         setTimeout(() => {
             btnReport.click();
-            document.getElementById("report-btn").click();
+            document.getElementById("info-btn").click();
 
         }, 1);
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("function-container").style.display = "flex";
                     document.body.classList.add('app-active');
                     btnReport.click();
-                    document.getElementById("report-btn").click();
+                    document.getElementById("info-btn").click();
 
                 } else {
                     // Nếu đăng nhập thất bại, hiển thị lỗi
@@ -931,7 +931,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("info-query").value = "";
         infoContainer.style.display = "Block";
         fadeIn(infoContainer);
-        updatePageTitle("thông tin");
+        updatePageTitle("thông tin thiếu nhi");
 
     });
 
@@ -1731,3 +1731,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
