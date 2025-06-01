@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const infoResults = document.getElementById("info-results");
+    if (infoResults) {
+        infoResults.innerHTML = "";
+    }
+
     if (localStorage.getItem("loginTimestamp")) {
         // Người dùng đã đăng nhập, ẩn form đăng nhập và hiển thị giao diện chính
         document.getElementById("login-container").style.display = "none";
@@ -757,7 +762,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("report-query").value = "";
         document.getElementById("report-results").innerHTML = "";
 
-        document.getElementById("info-ressults").innerHTML = "";
+        document.getElementById("info-query").value = "";
+        document.getElementById("info-results").innerHTML = "";
+
         document
             .querySelectorAll("#status-dropdown .status-box")
             .forEach((el) => el.classList.remove("active"));
@@ -787,7 +794,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("report-results").innerHTML = "";
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
-
+        document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
         document
             .querySelectorAll("#status-dropdown .status-box")
@@ -831,7 +838,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("report-results").innerHTML = "";
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
-
+        document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
         document
             .querySelectorAll("#status-dropdown .status-box")
@@ -875,7 +882,7 @@ document.addEventListener("DOMContentLoaded", function () {
         hideStatusDropdown();
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
-
+        document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
 
         qrContainer.style.display = "none";
@@ -913,7 +920,7 @@ document.addEventListener("DOMContentLoaded", function () {
         infoContainer.style.display = "none";
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
-
+        document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
         reportContainer.style.display = "block";
         fadeIn(reportContainer);
@@ -925,6 +932,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("info-btn").addEventListener("click", () => {
         currentMode = "info";
         document.getElementById("report-dropdown").style.display = "none";
+        document.getElementById("info-query").value = "";
         infoContainer.style.display = "Block";
         fadeIn(infoContainer);
         updatePageTitle("thông tin");
@@ -1070,6 +1078,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
     function renderInfoPage(data) {
+
         // Lấy phần tử chứa kết quả (theo HTML, đây là div có id "info-results")
         const resultsDiv = document.getElementById("info-results");
 
@@ -1078,7 +1087,7 @@ document.addEventListener("DOMContentLoaded", function () {
         wrapper.className = "table-responsive";
         // Giới hạn chiều cao của vùng kết quả, ví dụ: chiều cao tối đa của vùng hiển thị
         wrapper.style.maxHeight = "calc(100vh-100px)";
-        //wrapper.style.marginBottom = "70px";
+        wrapper.style.marginBottom = "70px";
         wrapper.style.overflowY = "auto"; // Cho phép cuộn dọc nếu vượt quá chiều cao
 
         // Duyệt qua từng record để tạo các "info-card"
