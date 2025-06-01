@@ -251,6 +251,10 @@ body.app-active .header-container {
 	margin: 10px;
 }
 
+#info-container {
+	padding-bottom: 60px;
+}
+
 .info-card {
 	border: 1px solid var(--primary-color);
 	border-radius: 5px;
@@ -295,8 +299,6 @@ body.app-active .header-container {
 		*/
 		padding: 10px; /* Giảm padding */
 		/* Thêm overflow nếu nội dung có thể dài */
-		overflow-y: auto;
-		max-height: calc(100vh-100px); /* Ví dụ giới hạn chiều cao */
 	}
 
 /* --- Fullscreen QR Container --- */
@@ -437,6 +439,9 @@ video {
 	border: 1px solid var(--neutral-color); /* Thêm border cho container */
 	border-radius: 5px;
 	overflow: hidden;
+	max-height: calc(100vh - 200px); /* hoặc giá trị khác phù hợp */
+	overflow-y: auto;
+	margin-bottom:60px;
 }
 
 table {
