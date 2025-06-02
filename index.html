@@ -164,19 +164,7 @@
     <script src="/0902/main.js"></script>
 
     <!-- Đăng ký Service Worker để hỗ trợ offline -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/0902/service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker đăng ký thành công với scope:', registration.scope);
-                    })
-                    .catch(err => {
-                        console.warn('Service Worker đăng ký thất bại:', err);
-                    });
-            });
-        }
-    </script>
+
 </body>
 </html>
 
