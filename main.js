@@ -1066,7 +1066,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function renderInfoPage(data) {
-
         // Lấy phần tử chứa kết quả (theo HTML, đây là div có id "info-results")
         const resultsDiv = document.getElementById("info-results");
 
@@ -1074,7 +1073,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const wrapper = document.createElement("div");
         wrapper.className = "table-responsive";
         // Giới hạn chiều cao của vùng kết quả, ví dụ: chiều cao tối đa của vùng hiển thị
-        wrapper.style.maxHeight = "calc(100vh-100px)";
+        wrapper.style.maxHeight = "calc(100vh - 100px)";
         wrapper.style.overflowY = "auto"; // Cho phép cuộn dọc nếu vượt quá chiều cao
 
         // Duyệt qua từng record để tạo các "info-card"
