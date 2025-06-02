@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'attendance-cache-v8';
+﻿const CACHE_NAME = 'attendance-cache-v9';
 const urlsToCache = [
     '/0902/',
     '/0902/index.html',
@@ -23,35 +23,34 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-    if (event.request.method !== 'GET') {
-        event.respondWith(fetch(event.request));
-        return;
-    }
+  if (event.request.method !== 'GET') {
+      event.respondWith(fetch(event.request));
+      return;
+  }
 
-    const requestURL = new URL(event.request.url);
-    if (requestURL.searchParams.get('action') === 'search' || requestURL.searchParams.get('mode') === 'report') {
-        event.respondWith(
-            fetch(event.request).catch(() => caches.match(event.request))
-        );
-        return;
-    }
+  const requestURL = new URL(event.request.url);
+  if (requestURL.searchParams.get('action') === 'search' || requestURL.searchParams.get('mode') === 'report') {
+      // Tránh fallback, trả về kết quả fetch trực tiếp
+      event.respondWith(fetch(event.request));
+      return;
+  }
 
-    event.respondWith(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.match(event.request).then(cachedResponse => {
-                const networkFetch = fetch(event.request).then(networkResponse => {
-                    if (networkResponse && networkResponse.status === 200) {
-                        cache.put(event.request, networkResponse.clone());
-                    }
-                    return networkResponse;
-                }).catch(error => {
-                    console.error("Lỗi fetch từ network:", error);
-                    return cachedResponse;
-                });
-                return cachedResponse || networkFetch;
-            });
-        })
-    );
+  event.respondWith(
+      caches.open(CACHE_NAME).then(cache => {
+          return cache.match(event.request).then(cachedResponse => {
+              const networkFetch = fetch(event.request).then(networkResponse => {
+                  if (networkResponse && networkResponse.status === 200) {
+                      cache.put(event.request, networkResponse.clone());
+                  }
+                  return networkResponse;
+              }).catch(error => {
+                  console.error("Lỗi fetch từ network:", error);
+                  return cachedResponse;
+              });
+              return cachedResponse || networkFetch;
+          });
+      })
+  );
 });
 
 self.addEventListener('activate', event => {
