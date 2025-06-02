@@ -1313,7 +1313,9 @@ document.addEventListener("DOMContentLoaded", function () {
         currentReportPage = 1;
         renderReportTable();
     }
-
+    
+    window.handleReportData = handleReportData;
+    
     function fetchReportDataJSONP(query) {
         const script = document.createElement("script");
         const url = webAppUrl +
