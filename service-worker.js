@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'attendance-cache-v9';
+﻿const CACHE_NAME = 'attendance-cache-v10';
 const urlsToCache = [
     '/0902/',
     '/0902/index.html',
@@ -28,12 +28,19 @@ self.addEventListener('fetch', event => {
       return;
   }
 
-  const requestURL = new URL(event.request.url);
-  if (requestURL.searchParams.get('action') === 'search' || requestURL.searchParams.get('mode') === 'report') {
-      // Tránh fallback, trả về kết quả fetch trực tiếp
-      event.respondWith(fetch(event.request));
-      return;
-  }
+    const requestURL = new URL(event.request.url);
+
+    // Kiểm tra nếu đây là request dynamic cho search hoặc report
+    if (requestURL.searchParams.get('action') === 'search' || requestURL.searchParams.get('mode') === 'report') {
+        event.respondWith(
+            fetch(event.request).catch(() => {
+                return new Response(JSON.stringify({ error: "Network error" }), {
+                    headers: { "Content-Type": "application/json" }
+                });
+            })
+        );
+        return;
+    }
 
   event.respondWith(
       caches.open(CACHE_NAME).then(cache => {
