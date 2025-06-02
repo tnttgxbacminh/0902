@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.classList.add('app-active');
         setTimeout(() => {
             btnReport.click();
-            document.getElementById("info-btn").click();
+            //document.getElementById("info-btn").click();
 
         }, 1);
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("function-container").style.display = "flex";
                     document.body.classList.add('app-active');
                     btnReport.click();
-                    document.getElementById("info-btn").click();
+                    //document.getElementById("info-btn").click();
 
                 } else {
                     // Nếu đăng nhập thất bại, hiển thị lỗi
@@ -146,11 +146,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const webAppUrl =
         "https://script.google.com/macros/s/AKfycbz1Pf6rxz0HVA7FA_GpDWm5NDdamvtC8-vNRM9MWwmhTa3Zo6ACKdrv8j9t7z-7l-wi/exec";
     let currentAttendanceType = "di-le"; // Mặc định
-    let currentMode = "report"; // Có thể là "qr", "search", "report"
+    let currentMode = "info"; // Có thể là "qr", "search", "report"
     const searchCache = new Map();
     let searchData = [];
     let currentPage = 1;
     let reportData = [];
+    let infoData = [];
     let currentReportPage = 1;
     let selectedStudents = {};
 
@@ -1045,7 +1046,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy, vui lòng kiểm tra lại!</p>`;
                 return;
             }
-            searchCache.set(query, data);
+            searchCache.clear();
+            infoData = data;
             renderInfoPage(data);
         };
 
