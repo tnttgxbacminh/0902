@@ -23,16 +23,19 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-    // Nếu request có chứa "action=search", bỏ qua xử lý cache
-    if (event.request.url.includes("action=search")) {
+    // Nếu URL có chứa "action=search" hoặc "mode=report", lấy trực tiếp từ network
+    if (event.request.url.includes("action=search") ||
+        event.request.url.includes("mode=report")) {
         event.respondWith(fetch(event.request));
         return;
     }
-    // Các xử lý cache khác cho các yêu cầu GET
+
+    // Nếu request không phải GET, chuyển hướng trực tiếp
     if (event.request.method !== 'GET') {
         event.respondWith(fetch(event.request));
         return;
     }
+
     event.respondWith(
         caches.open(CACHE_NAME).then(cache => {
             return cache.match(event.request).then(cachedResponse => {
@@ -47,7 +50,6 @@ self.addEventListener('fetch', event => {
                         console.error("Lỗi fetch từ network:", error);
                         return cachedResponse;
                     });
-
                 return cachedResponse || networkFetch;
             });
         })
