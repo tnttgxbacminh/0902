@@ -213,12 +213,12 @@ body.app-active .header-container {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-around; /* Chia đều các mục */
+	justify-content: center;
+	gap: 30px;
 }
 
 /* Các mục dropdown */
 .status-box {
-	flex: 1;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
