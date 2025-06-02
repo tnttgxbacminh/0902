@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.classList.add('app-active');
         setTimeout(() => {
             btnReport.click();
-            document.getElementById("report-btn").click();
+            //document.getElementById("info-btn").click();
 
         }, 1);
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("function-container").style.display = "flex";
                     document.body.classList.add('app-active');
                     btnReport.click();
-                    document.getElementById("report-btn").click();
+                    //document.getElementById("info-btn").click();
 
                 } else {
                     // Nếu đăng nhập thất bại, hiển thị lỗi
@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let searchData = [];
     let currentPage = 1;
     let reportData = [];
+    let infoData = [];
     let currentReportPage = 1;
     let selectedStudents = {};
 
@@ -747,12 +748,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function showContainer(containerId) {
+        const containers = ["qr-container", "search-container", "report-container", "info-container"];
+        containers.forEach(id => {
+            const el = document.getElementById(id);
+            el.removeAttribute("hidden");
+            el.style.display = "none"; // ẩn hết, sau đó chỉ hiển thị container cần
+        });
+        const target = document.getElementById(containerId);
+        target.style.display = "block";
+    }
+
     btnQR.addEventListener("click", () => {
         currentMode = "qr";
         btnQR.classList.add("active");
         btnSearch.classList.remove("active");
         btnReport.classList.remove("active");
         btnOff.classList.remove("active");
+        showContainer("qr-container");
+
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
         document.getElementById("report-query").value = "";
@@ -773,11 +787,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (pageTitle) {
             pageTitle.style.color = ""; // hoặc màu cũ bạn mong muốn
         }
-
-        qrContainer.style.display = "none";
-        searchContainer.style.display = "none";
-        reportContainer.style.display = "none";
-        infoContainer.style.display = "none";
     });
     btnSearch.addEventListener("click", () => {
         currentMode = "search";
@@ -815,10 +824,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     showModal("Lỗi khi tắt camera!", "error");
                 });
         }
-        qrContainer.style.display = "none";
-        searchContainer.style.display = "none";
-        reportContainer.style.display = "none";
-        infoContainer.style.display = "none";
+        showContainer("search-container");
         fadeIn(searchContainer);
     });
 
@@ -859,11 +865,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("Lỗi khi dừng camera:", error);
                 });
         }
-        // Ẩn container QR và báo cáo
-        qrContainer.style.display = "none";
-        searchContainer.style.display = "none";
-        reportContainer.style.display = "none";
-        infoContainer.style.display = "none";
         // Hiển thị giao diện tìm kiếm
         fadeIn(searchContainer);
     });
@@ -879,11 +880,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-results").innerHTML = "";
         document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
-
-        qrContainer.style.display = "none";
-        searchContainer.style.display = "none";
-        reportContainer.style.display = "none";
-        infoContainer.style.display = "none";
 
         updatePageTitle("Tìm kiếm");
 
@@ -912,9 +908,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("report-btn").addEventListener("click", () => {
         currentMode = "report";
         document.getElementById("report-dropdown").style.display = "none";
-        infoContainer.style.display = "none";
-        document.getElementById("search-query").value = "";
-        document.getElementById("search-results").innerHTML = "";
+        showContainer("report-container");
+        document.getElementById("report-query").value = "";
+        document.getElementById("report-results").innerHTML = "";
         document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
         reportContainer.style.display = "block";
@@ -927,7 +923,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("info-btn").addEventListener("click", () => {
         currentMode = "info";
         document.getElementById("report-dropdown").style.display = "none";
-        showModal("Chức năng Point chưa được cập nhật", "normal");
+        showContainer("info-container");
+        document.getElementById("search-results").innerHTML = "";
+        document.getElementById("info-query").value = "";
+        infoContainer.style.display = "Block";
+        fadeIn(infoContainer);
+        updatePageTitle("thông tin thiếu nhi");
 
     });
 
@@ -935,14 +936,6 @@ document.addEventListener("DOMContentLoaded", function () {
     /*
     document.getElementById("point-btn").addEventListener("click", () => {
         currentMode = "point";
-
-        document.getElementById("report-dropdown").style.display = "none";
-        document.getElementById("search-results").innerHTML = "";
-        document.getElementById("info-query").value = "";
-        infoContainer.style.display = "Block";
-        fadeIn(infoContainer);
-        updatePageTitle("thông tin thiếu nhi");
-
         document.getElementById("report-dropdown").style.display = "none";
         showModal("Chức năng Point chưa được cập nhật", "normal");
     });
@@ -1053,7 +1046,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultsDiv.innerHTML = `<p class="student-mesage">Không tìm thấy, vui lòng kiểm tra lại!</p>`;
                 return;
             }
-            searchCache.set(query, data);
+            searchCache.clear();
+            infoData = data;
             renderInfoPage(data);
         };
 
