@@ -29,16 +29,9 @@ self.addEventListener('fetch', event => {
   }
 
     const requestURL = new URL(event.request.url);
-
-    // Kiểm tra nếu đây là request dynamic cho search hoặc report
     if (requestURL.searchParams.get('action') === 'search' || requestURL.searchParams.get('mode') === 'report') {
-        event.respondWith(
-            fetch(event.request).catch(() => {
-                return new Response(JSON.stringify({ error: "Network error" }), {
-                    headers: { "Content-Type": "application/json" }
-                });
-            })
-        );
+        // Tránh fallback, trả về kết quả fetch trực tiếp
+        event.respondWith(fetch(event.request));
         return;
     }
 
