@@ -878,6 +878,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-results").innerHTML = "";
         document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
+        document.getElementById("report-query").value = "";
         document.getElementById("report-results").innerHTML = "";
 
         qrContainer.style.display = "none";
@@ -915,6 +916,8 @@ document.addEventListener("DOMContentLoaded", function () {
         infoContainer.style.display = "none";
         document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
+        document.getElementById("report-query").value = "";
+        document.getElementById("report-results").innerHTML = "";
         document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
         reportContainer.style.display = "block";
@@ -927,9 +930,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("info-btn").addEventListener("click", () => {
         currentMode = "info";
         document.getElementById("report-dropdown").style.display = "none";
+        document.getElementById("search-query").value = "";
         document.getElementById("search-results").innerHTML = "";
+        document.getElementById("report-query").value = "";
         document.getElementById("report-results").innerHTML = "";
         document.getElementById("info-query").value = "";
+        document.getElementById("info-results").innerHTML = "";
         infoContainer.style.display = "Block";
         fadeIn(infoContainer);
         updatePageTitle("thông tin thiếu nhi");
