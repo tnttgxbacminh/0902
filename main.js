@@ -913,14 +913,13 @@ document.addEventListener("DOMContentLoaded", function () {
         currentMode = "report";
         document.getElementById("report-dropdown").style.display = "none";
         infoContainer.style.display = "none";
-        document.getElementById("search-query").value = "";
-        document.getElementById("search-results").innerHTML = "";
+        document.getElementById("report-query").value = "";
+        document.getElementById("report-results").innerHTML = "";
         document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
         reportContainer.style.display = "block";
         fadeIn(reportContainer);
         updatePageTitle("Kết quả điểm danh");
-
     });
 
     // Lựa chọn Info – dùng giao diện search với chức năng tìm kiếm từ sheet "base"
