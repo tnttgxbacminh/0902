@@ -23,27 +23,31 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-    const requestUrl = new URL(event.request.url);
-    if ((requestUrl.searchParams.get('action') && requestUrl.searchParams.get('action') === 'search') ||
-        (requestUrl.searchParams.get('mode') && requestUrl.searchParams.get('mode') === 'report')) {
+    if (event.request.method !== 'GET') {
         event.respondWith(fetch(event.request));
+        return;
+    }
+
+    const requestURL = new URL(event.request.url);
+    if (requestURL.searchParams.get('action') === 'search' || requestURL.searchParams.get('mode') === 'report') {
+        event.respondWith(
+            fetch(event.request).catch(() => caches.match(event.request))
+        );
         return;
     }
 
     event.respondWith(
         caches.open(CACHE_NAME).then(cache => {
             return cache.match(event.request).then(cachedResponse => {
-                const networkFetch = fetch(event.request)
-                    .then(networkResponse => {
-                        if (networkResponse && networkResponse.status === 200) {
-                            cache.put(event.request, networkResponse.clone());
-                        }
-                        return networkResponse;
-                    })
-                    .catch(error => {
-                        console.error("Lỗi fetch từ network:", error);
-                        return cachedResponse;
-                    });
+                const networkFetch = fetch(event.request).then(networkResponse => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        cache.put(event.request, networkResponse.clone());
+                    }
+                    return networkResponse;
+                }).catch(error => {
+                    console.error("Lỗi fetch từ network:", error);
+                    return cachedResponse;
+                });
                 return cachedResponse || networkFetch;
             });
         })
