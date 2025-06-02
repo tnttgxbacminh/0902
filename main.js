@@ -869,7 +869,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     btnReport.addEventListener("click", () => {
-        currentMode = "report";
         btnReport.classList.add("active");
         btnQR.classList.remove("active");
         btnSearch.classList.remove("active");
@@ -879,6 +878,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("search-results").innerHTML = "";
         document.getElementById("info-query").value = "";
         document.getElementById("info-results").innerHTML = "";
+        document.getElementById("report-results").innerHTML = "";
 
         qrContainer.style.display = "none";
         searchContainer.style.display = "none";
@@ -928,6 +928,7 @@ document.addEventListener("DOMContentLoaded", function () {
         currentMode = "info";
         document.getElementById("report-dropdown").style.display = "none";
         document.getElementById("search-results").innerHTML = "";
+        document.getElementById("report-results").innerHTML = "";
         document.getElementById("info-query").value = "";
         infoContainer.style.display = "Block";
         fadeIn(infoContainer);
