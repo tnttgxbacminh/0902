@@ -1066,115 +1066,54 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function renderInfoPage(data) {
-        // Lấy phần tử chứa kết quả (theo HTML, đây là div có id "info-results")
-        const resultsDiv = document.getElementById("info-results");
+        let html = `
+    <div class="table-responsive" style="max-height: calc(100vh - 100px); overflow-y: auto;">
+  `;
 
-        // Tạo phần bọc ngoài kết quả với class "table-responsive" để cho vùng này cuộn
-        const wrapper = document.createElement("div");
-        wrapper.className = "table-responsive";
-        // Giới hạn chiều cao của vùng kết quả, ví dụ: chiều cao tối đa của vùng hiển thị
-        wrapper.style.maxHeight = "calc(100vh - 100px)";
-        wrapper.style.overflowY = "auto"; // Cho phép cuộn dọc nếu vượt quá chiều cao
-
-        // Duyệt qua từng record để tạo các "info-card"
         data.forEach((record, index) => {
-            const orderNumber = index + 1;
-            // Tạo thẻ card cho từng bản ghi
-            const card = document.createElement("div");
-            card.className = "info-card";
-
-            // Hàng 1: Tên Thánh và Họ và Tên
-            const row1 = document.createElement("div");
-            row1.className = "info-row info-row-1";
-            row1.textContent = `${orderNumber}. ${record.holyName || ""} ${record.fullName || ""}`;
-            card.appendChild(row1);
-
-            // Hàng 3: Hiển thị lớp và ngày sinh (ví dụ)
-            const row3 = document.createElement("div");
-            row3.className = "info-row";
-
-            const col1 = document.createElement("div");
-            col1.className = "col";
-            col1.textContent = `Lớp: ${record.birthDate || ""}`;
-            row3.appendChild(col1);
-
-            const col2 = document.createElement("div");
-            col2.className = "col";
-            col2.textContent = `Ngày sinh: ${record.dob || ""}`;
-            row3.appendChild(col2);
-
-            card.appendChild(row3);
-
-            // Hàng 2: SĐT
-            const row2 = document.createElement("div");
-            row2.className = "info-row info-row-2";
-            row2.textContent = `SĐT: ${record.sdt || ""}`;
-            card.appendChild(row2);
-
-            // Hàng 4: Tên cha và Tên mẹ
-            const row4 = document.createElement("div");
-            row4.className = "info-row info-row-4";
-            row4.textContent = `Bố: ${record.tenCha || ""}`;
-            card.appendChild(row4);
-
-            const row0 = document.createElement("div");
-            row0.className = "info-row info-row-0";
-            row0.textContent = `Mẹ: ${record.tenMe || ""}`;
-            card.appendChild(row0);
-
-            // Hàng 5: Tình trạng
-            const row5 = document.createElement("div");
-            row5.className = "info-row info-row-5";
-            row5.textContent = `Tình trạng: ${record.trangThai || ""}`;
-            card.appendChild(row5);
-
-            // Hàng 6: Giáo họ và Mã số
-            const row6 = document.createElement("div");
-            row6.className = "info-row";
-            const col5 = document.createElement("div");
-            col5.className = "col";
-            col5.textContent = `Giáo họ: ${record.giaoho || ""}`;
-            row6.appendChild(col5);
-            const col6 = document.createElement("div");
-            col6.className = "col";
-            col6.textContent = `Mã số: ${record.maso || ""}`;
-            row6.appendChild(col6);
-            card.appendChild(row6);
-
-            // Hàng 7: Rửa tội và Rước lễ
-            const row7 = document.createElement("div");
-            row7.className = "info-row";
-            const col7 = document.createElement("div");
-            col7.className = "col";
-            col7.textContent = `Rửa tội: ${record.ruatoi || ""}`;
-            row7.appendChild(col7);
-            const col8 = document.createElement("div");
-            col8.className = "col";
-            col8.textContent = `Rước lễ: ${record.xungtoi || ""}`;
-            row7.appendChild(col8);
-            card.appendChild(row7);
-
-            // Hàng 8: Thêm sức và Ghi chú
-            const row8 = document.createElement("div");
-            row8.className = "info-row";
-            const col9 = document.createElement("div");
-            col9.className = "col";
-            col9.textContent = `Thêm sức: ${record.themsuc || ""}`;
-            row8.appendChild(col9);
-            const col10 = document.createElement("div");
-            col10.className = "col";
-            col10.textContent = `Ghi chú: ${record.note || ""}`;
-            row8.appendChild(col10);
-            card.appendChild(row8);
-
-            // Thêm card này vào wrapper
-            wrapper.appendChild(card);
+            html += `
+      <div class="info-card">
+        <!-- Hàng 1: Tên Thánh và Họ và Tên -->
+        <div class="info-row info-row-1">
+          ${index + 1}. ${record.holyName || ""} ${record.fullName || ""}
+        </div>
+        <!-- Hàng 3: Lớp và Ngày sinh -->
+        <div class="info-row">
+          <div class="col">Lớp: ${record.birthDate || ""}</div>
+          <div class="col">Ngày sinh: ${record.dob || ""}</div>
+        </div>
+        <!-- Hàng 2: SĐT -->
+        <div class="info-row info-row-2">SĐT: ${record.sdt || ""}</div>
+        <!-- Hàng 4: Tên cha và Tên mẹ -->
+        <div class="info-row info-row-4">Bố: ${record.tenCha || ""}</div>
+        <div class="info-row info-row-0">Mẹ: ${record.tenMe || ""}</div>
+        <!-- Hàng 5: Tình trạng -->
+        <div class="info-row info-row-5">Tình trạng: ${record.trangThai || ""}</div>
+        <!-- Hàng 6: Giáo họ và Mã số -->
+        <div class="info-row">
+          <div class="col">Giáo họ: ${record.giaoho || ""}</div>
+          <div class="col">Mã số: ${record.maso || ""}</div>
+        </div>
+        <!-- Hàng 7: Rửa tội và Rước lễ -->
+        <div class="info-row">
+          <div class="col">Rửa tội: ${record.ruatoi || ""}</div>
+          <div class="col">Rước lễ: ${record.xungtoi || ""}</div>
+        </div>
+        <!-- Hàng 8: Thêm sức và Ghi chú -->
+        <div class="info-row">
+          <div class="col">Thêm sức: ${record.themsuc || ""}</div>
+          <div class="col">Ghi chú: ${record.note || ""}</div>
+        </div>
+      </div>
+    `;
         });
 
-        // Xoá nội dung cũ và thêm wrapper chứa các info-card mới vào vùng "info-results"
-        resultsDiv.innerHTML = "";
-        resultsDiv.appendChild(wrapper);
+        html += `</div>`;
+
+        // Gán kết quả vào vùng hiển thị
+        document.getElementById("info-results").innerHTML = html;
     }
+
     // ---------------------
     // HIỂN THỊ TABLE VÀ GỬI DỮ LIỆU BATCH
     // ---------------------
