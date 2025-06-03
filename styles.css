@@ -258,7 +258,7 @@ body.app-active .header-container {
 	margin: 10px 0 10px 0;
 }
 	.info-card:last-child {
-		margin-bottom: 50px;
+		margin-bottom: 70px;
 	}
 
 .info-row-1 {
@@ -301,6 +301,7 @@ body.app-active .header-container {
 		padding: 10px; /* Giảm padding */
 		/* Thêm overflow nếu nội dung có thể dài */
 	}
+
 
 /* --- Fullscreen QR Container --- */
 #qr-container.fullscreen {
@@ -354,6 +355,29 @@ video {
 	height: 100%;
 	object-fit: cover;
 }
+
+#complete-btn {
+	position: absolute;
+	bottom: 30px; /* Khoảng cách từ đáy */
+	left: 50%; /* Nút bắt đầu từ giữa màn hình */
+	transform: translateX(-50%); /* Dịch chuyển nút về giữa thực sự */
+	height: 45px;
+	width: 45px;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.5); /* 50% trong suốt */
+	border: none;
+	color: var(--card-bg);
+	cursor: pointer;
+	z-index: 100; /* Nút nằm trên các phần tử khác */
+	font-size: 2.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+	#complete-btn:hover {
+		background-color: var(--light-white);
+	}
 
 /* --- Style cho Search & Report --- */
 /* Chỉ áp dụng cho input (query) */
