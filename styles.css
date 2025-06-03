@@ -645,12 +645,6 @@ th {
 	max-width: 900px;
 	padding: 20px 10px;
 	text-align: center;
-	/*
-	background: var(--card-bg);
-	border-radius: 8px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	*/
-
 	transform: translate(-50%, -50%);
 }
 
@@ -694,7 +688,7 @@ th {
 		}
 
 /* --- Media Query cho màn hình nhỏ (điện thoại) --- */
-@media (max-width: 600px) {
+@media (max-width: 767px) {
 	body {
 		font-size: 0.95rem; /* Có thể giảm nhẹ font gốc trên mobile */
 		width: 100%;
@@ -722,7 +716,11 @@ th {
 		width: 25px;
 		height: 25px;
 	}
-
+	.login-container button,
+	.login-container input {
+		height: 40px;
+		font-size: 1rem;
+	}
 	body.app-active .header-container {
 		padding: 50px 5px 5px 20px;
 	}
@@ -878,8 +876,7 @@ th {
 		}
 }
 
-
-@media (min-width: 601px) {
+@media (min-width: 768px) {
 	#search-results table colgroup col:nth-child(1) {
 		width: 20%;
 	}
