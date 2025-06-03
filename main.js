@@ -1074,7 +1074,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderInfoPage(data) {
         let html = `
-    <div class="table-responsive" style="max-height: calc(100vh - 100px); overflow-y: auto;">
+    <div class="table-responsive" style="max-height: calc(100vh - 200px); overflow-y: auto;">
   `;
 
         data.forEach((record, index) => {
@@ -1120,7 +1120,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // Gán kết quả vào vùng hiển thị
         document.getElementById("info-results").innerHTML = html;
     }
-
     // ---------------------
     // HIỂN THỊ TABLE VÀ GỬI DỮ LIỆU BATCH
     // ---------------------
@@ -1665,3 +1664,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
