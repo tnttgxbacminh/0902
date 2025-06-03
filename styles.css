@@ -287,6 +287,7 @@ body.app-active .header-container {
 	height: 100%;
 	max-width: 900px;
 	padding: 0 10px; /* Thêm padding ngang */
+	background-color: var(--card-bg);
 }
 
 	.function-container .container {
@@ -655,10 +656,10 @@ th {
 
 	.login-container input {
 		width: 100%;
-		/* Giảm padding/font */
-		padding: 12px 10px;
+		height: 45px;
+		padding: 0 50px 0 20px; /* padding-right đủ để chứa button */
 		margin: 10px 0; /* Giảm margin */
-		font-size: 1rem; /* Giảm */
+		font-size: 1.2rem; /* Giảm */
 		border: 1px solid var(--neutral-color);
 		border-radius: 20px;
 		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -677,7 +678,8 @@ th {
 		margin: 10px 0; /* Giữ margin top */
 		background: var(--primary-color);
 		color: #fff;
-		font-size: 1rem; /* Giảm */
+		height: 45px;
+		font-size: 1.2rem; /* Giảm */
 		border: none;
 		border-radius: 20px;
 		cursor: pointer;
@@ -759,11 +761,6 @@ th {
 		padding: 0 16px; /* Giữ padding ngang */
 	}
 
-	.login-container {
-		max-width: 100%;
-		padding: 0 10px; /* Giữ padding ngang */
-	}
-
 	.function-container {
 		flex-direction: column; /* Giữ nguyên */
 		max-width: 100%;
@@ -774,14 +771,6 @@ th {
 			padding: 10px; /* Giảm padding container con */
 			max-height: 100%; /* Bỏ max-height để nội dung tự do */
 		}
-
-	.login-container input,
-	.login-container button {
-		/* Đảm bảo font đủ lớn để đọc */
-		font-size: 1rem;
-		padding: 7px 10px; /* Giữ padding đủ lớn */
-		/*min-height: 42px;*/ /* Đảm bảo dễ bấm */
-	}
 
 	.student-mesage {
 		font-size: 0.9rem;
