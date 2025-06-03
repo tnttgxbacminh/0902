@@ -1,3 +1,4 @@
+
 /* --- Biến màu sắc (Giữ nguyên) --- */
 :root {
 	--primary-color: #007bff;
@@ -67,7 +68,7 @@ body.app-active .header-container {
 	justify-content: flex-start; /* Căn trái */
 	width: 100%;
 	max-width: 900px;
-	padding: 50px 5px 5px 30px;
+	padding: 50px 5px 5px 20px;
 	z-index: 100;
 }
 
@@ -75,13 +76,13 @@ body.app-active .header-container {
 	body.app-active .header-container .top-image {
 		width: 30px;
 		height: 30px;
-		margin: 10px; /* Thêm margin phải để tạo khoảng cách với tiêu đề */
+		margin: 20px; /* Thêm margin phải để tạo khoảng cách với tiêu đề */
 	}
 
 	/* Sửa lại định dạng tiêu đề để không căn giữa theo container */
 	body.app-active .header-container .page-title {
 		text-align: left;
-		font-size: 1.2rem;
+		font-size: 1.4rem;
 		font-weight: bold;
 		color: var(--heading-color);
 		margin-bottom: 0;
@@ -94,12 +95,13 @@ body.app-active .header-container {
 	bottom: 0; /* Căn dưới */
 	left: 0; /* Căn trái */
 	width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-	height: 60px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
+	height: 70px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
 	background-color: var(--light-white);
 	display: flex;
 	justify-content: space-around; /* Phân bố đều các icon */
 	align-items: center;
-	z-index:950;
+	z-index: 950;
+	box-shadow: 0 -2px 1px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-button {
@@ -168,14 +170,14 @@ body.app-active .header-container {
 	background-color: var(--light-white);
 	display: flex;
 	flex-direction: column; /* Thay đổi thành column để chia thành 2 hàng */
-	/*box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);*/
+	box-shadow: 0 -2px 1px rgba(0, 0, 0, 0.1);
 	z-index: 1000;
 	border-radius: 25px 25px 0 0; /* Bo tròn chỉ góc trên */
 }
-	/* Khi ẩn dropdown */
-	#status-dropdown.hidden {
-		transform: translateY(100%);
-	}
+/* Khi ẩn dropdown */
+#status-dropdown.hidden {
+	transform: translateY(100%);
+}
 
 /* Header của dropdown */
 .dropdown-header {
@@ -190,7 +192,7 @@ body.app-active .header-container {
 /* Tiêu đề dropdown */
 .dropdown-title {
 	font-size: 1.1rem;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	color: var(--text-color);
 	margin-top: 15px;
 }
@@ -223,7 +225,6 @@ body.app-active .header-container {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	
 }
 
 /* Container cho icon */
@@ -235,7 +236,7 @@ body.app-active .header-container {
 	align-items: center;
 	background-color: var(--card-bg);
 	border: 1px solid var(--primary-color);
-	border-radius: 10px;
+	border-radius: 15px;
 }
 
 /* Icon trong container */
@@ -253,10 +254,13 @@ body.app-active .header-container {
 
 .info-card {
 	border: 1px solid var(--primary-color);
-	border-radius: 5px;
+	border-radius: 15px;
 	padding: 10px;
-	margin:10px 0 10px 0;
+	margin: 10px 0 10px 0;
 }
+	.info-card:last-child {
+		margin-bottom: 50px;
+	}
 
 .info-row-1 {
 	font-weight: bold;
@@ -272,6 +276,8 @@ body.app-active .header-container {
 	.info-row .col {
 		flex: 1; /* Chia đều không gian cho mỗi cột */
 	}
+
+
 
 /* --- Container chức năng --- */
 .function-container {
@@ -334,7 +340,7 @@ body.app-active .header-container {
 		background-color: var(--card-bg);
 		font-size: 1rem;
 		color: var(--text-color);
-		z-index:10;
+		z-index: 10;
 	}
 /* Container chứa camera */
 #cameraContainer {
@@ -353,41 +359,40 @@ video {
 /* Chỉ áp dụng cho input (query) */
 #search-query,
 #report-query,
-#info-query{
-	width: 100%; /* Input chiếm hết chiều rộng tại vị trí của nó */
-	height: 35px;
-	padding: 10px;
-	margin-top: 0;
-	margin-bottom: 15px;
-	font-size: 1rem;
+#info-query {
+	width: 100%;
+	height: 45px;
+	padding: 0 50px 0 20px; /* padding-right đủ để chứa button */
+	font-size: 1.2rem;
 	border: 1px solid var(--neutral-color);
-	border-radius: 5px;
+	border-radius: 20px;
+	box-sizing: border-box;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Áp dụng cho button */
 #search-button,
 #report-button,
-#info-button{
-	/* Bỏ width: 100%; để giữ kích thước button nhỏ gọn */
+#info-button {
+	position: absolute;
+	top: 50%;
+	right: 15px;
+	transform: translateY(-50%);
 	height: 35px;
-	padding: 0 30px;
-	margin-top: 0;
-	margin-bottom: 15px;
-	background-color: var(--primary-color);
-	color: #fff;
+	width: 35px;
 	border: none;
-	border-radius: 5px;
+	border-radius: 10px;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	background-color: transparent; /* Không hiển thị nền */
 }
 
 	#search-button:hover,
 	#report-button:hover,
-	#info-button:hover{
-		background-color: var(--primary-dark);
-		transform: scale(1.02);
+	#info-button:hover {
+		background-color: var(--bg-color);
 	}
 
 #search-query:focus,
@@ -398,46 +403,21 @@ video {
 }
 
 .input-group {
-	display: flex;
-	align-items: center;
+	position: relative;
 	width: 100%;
 }
 
-	.input-group input {
-		flex: 1; /* Input mở rộng chiếm không gian còn lại */
-		margin-top: 0; /* Bỏ margin top nếu bạn muốn căn chỉnh theo hàng */
-	}
-
-	.input-group button {
-		margin-left: 5px; /* Khoảng cách nhỏ giữa input và button */
-		margin-top: 0; /* Bỏ margin top để căn hàng */
-		width: auto; /* Đảm bảo button không bị mở rộng */
-	}
-
-
-		.input-group button img {
-			width: 20px;
-			height: 20px;
-			display: block;
-			filter: brightness(0) invert(1);
-		}
+.input-group img {
+	width: 28px;
+	height: 28px;
+	display: block;
+}
 
 
 /* --- Bảng (Table) --- */
-/* Bọc table trong div.table-responsive */
-.table-responsive {
-	width: 100%;
-	max-width: 100%;
-	overflow-x: auto;
-	-webkit-overflow-scrolling: touch;
-	margin-top: 5px;
-	border-radius: 5px;
-	overflow: hidden;
-	max-height: calc(100vh - 200px); /* hoặc giá trị khác phù hợp */
-	overflow-y: auto;
-}
 
 table {
+	margin-top: 10px;
 	table-layout: fixed; /* Cân nhắc dùng fixed nếu biết chiều rộng cột */
 	width: 100%; /* Đảm bảo bảng không cố gắng rộng hơn container */
 	border-collapse: collapse;
@@ -555,7 +535,7 @@ th {
 	opacity: 0;
 	visibility: hidden;
 	z-index: 1000;
-	padding: 30px;
+	padding: 10px;
 }
 
 	.modal.show {
@@ -565,10 +545,10 @@ th {
 
 .modal-content {
 	background: var(--light-white);
-	border-radius: 8px;
+	border-radius: 15px;
 	text-align: center;
 	position: relative;
-	box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 	padding: 10px 15px;
 }
 
@@ -579,6 +559,7 @@ th {
 		line-height: 1.6;
 		white-space: pre-line; /* Bảo toàn ký tự xuống dòng */
 		overflow-wrap: break-word;
+		text-align: center;
 	}
 
 	.modal-content.success {
@@ -680,7 +661,8 @@ th {
 		margin: 10px 0; /* Giảm margin */
 		font-size: 1rem; /* Giảm */
 		border: 1px solid var(--neutral-color);
-		border-radius: 5px;
+		border-radius: 20px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 		.login-container input:focus {
@@ -698,11 +680,12 @@ th {
 		color: #fff;
 		font-size: 1rem; /* Giảm */
 		border: none;
-		border-radius: 5px;
+		border-radius: 20px;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	}
 
 		.login-container button:hover {
@@ -722,20 +705,37 @@ th {
 		height: 95px;
 		margin: 40px 0;
 	}
+	#search-query,
+	#report-query,
+	#info-query {
+		height: 40px;
+		font-size: 1rem;
+	}
+	#search-button,
+	#report-button,
+	#info-button {
+		height: 32px;
+		width: 32px;
+	}
+	.input-group img {
+		width: 25px;
+		height: 25px;
+	}
+
 	body.app-active .header-container {
 		padding: 50px 5px 5px 20px;
 	}
 
 		/* Nếu muốn logo giảm xuống kích thước nhỏ hơn như ban đầu đã định (100px) */
 		body.app-active .header-container .top-image {
-			width: 30px;
-			height: 30px;
+			width: 25px;
+			height: 25px;
 			margin: 10px; /* Thêm margin phải để tạo khoảng cách với tiêu đề */
 		}
 
 		/* Sửa lại định dạng tiêu đề để không căn giữa theo container */
 		body.app-active .header-container .page-title {
-			font-size: 1rem;
+			font-size: 1.2rem;
 		}
 
 	.mode-toggle {
@@ -776,21 +776,6 @@ th {
 			max-height: 100%; /* Bỏ max-height để nội dung tự do */
 		}
 
-	#search-query,
-	#report-query,
-	#info-query {
-		height: 35px;
-		margin-bottom: 10px;
-	}
-
-	#search-button,
-	#report-button,
-	#info-button {
-		height: 35px;
-		padding: 0 20px;
-		margin-bottom: 10px;
-	}
-
 	.login-container input,
 	.login-container button {
 		/* Đảm bảo font đủ lớn để đọc */
@@ -805,7 +790,7 @@ th {
 
 	/* Kích thước font trong dropdown và modal */
 	.modal {
-		padding: 40px;
+		padding: 10px;
 	}
 
 	.modal-content {
