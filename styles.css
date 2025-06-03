@@ -173,10 +173,6 @@ body.app-active .header-container {
 	z-index: 1000;
 	border-radius: 25px 25px 0 0; /* Bo tròn chỉ góc trên */
 }
-/* Khi ẩn dropdown */
-#status-dropdown.hidden {
-	transform: translateY(100%);
-}
 
 /* Header của dropdown */
 .dropdown-header {
