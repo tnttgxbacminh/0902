@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 //console.log("Đã lưu điểm danh Offline:", record);
                 // Chỉ hiển thị modal nếu chưa được hiển thị trong phiên này
                 if (!hasNotifiedOffline) {
-                    showModal("Lưu Offline!", "error");
+                    //showModal("Đã lưu điểm danh!", "error");
                     sendOfflineNotification();
                     hasNotifiedOffline = true;
                 }
@@ -1330,7 +1330,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             recordType: "batch",   // Đánh dấu đây là bản ghi dạng batch
                             records: records       // Đây là mảng các bản ghi đã tạo
                         };
-                        showModal("Đã lưu điểm danh" + attendanceDescription + selectedIds.length + " thiếu nhi Offline.", "normal");
+                        showModal("Lưu Offline" + attendanceDescription + selectedIds.length + " thiếu nhi.", "normal");
                         saveAttendanceRecord(batchRecord);
                     }
 
