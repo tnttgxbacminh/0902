@@ -1498,7 +1498,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   -webkit-page-break-inside: avoid;
                 }
               }
-              @media (max-width: 600px) {
+              @media (max-width: 767px) {
                 .header h1 {
                 margin: 0;
                 font-size: 28px;
@@ -1664,4 +1664,3 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
-
