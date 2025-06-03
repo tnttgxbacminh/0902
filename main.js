@@ -807,11 +807,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Ẩn nút Hoàn thành khi dừng camera
                 document.getElementById("complete-btn").style.display = "none";
                 document.querySelector(".mode-toggle").style.display = "flex";
-
                 // Cập nhật giao diện, ví dụ chuyển về trang giao diện quét (theo logic của bạn)
                 btnReport.click();
-                document.getElementById("info-btn").click();
-
+                document.getElementById("report-btn").click();
                 // Nếu có mạng, đồng bộ dữ liệu; nếu không, thông báo lỗi
                 if (navigator.onLine) {
                     syncCombinedAttendanceRecords();
