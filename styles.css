@@ -742,6 +742,15 @@ th {
 		width: 25px;
 		height: 25px;
 	}
+	#complete-btn {
+		height: 60px;
+		width: 60px;
+		font-size: 40px;
+		padding: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 	.login-container button,
 	.login-container input {
 		height: 40px;
