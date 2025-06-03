@@ -1,3 +1,4 @@
+
 /* --- Biến màu sắc (Giữ nguyên) --- */
 :root {
 	--primary-color: #007bff;
@@ -743,13 +744,9 @@ th {
 		height: 25px;
 	}
 	#complete-btn {
-		height: 60px;
-		width: 60px;
-		font-size: 40px;
-		padding: 5px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		height: 70px;
+		width: 70px;
+		font-size: 30px;
 	}
 	.login-container button,
 	.login-container input {
