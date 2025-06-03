@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'attendance-cache-v10';
+﻿const CACHE_NAME = 'attendance-cache-v11';
 const urlsToCache = [
     '/0902/',
     '/0902/index.html',
@@ -29,7 +29,7 @@ self.addEventListener('fetch', event => {
   }
 
     const requestURL = new URL(event.request.url);
-    if (requestURL.searchParams.get('action') === 'search' || requestURL.searchParams.get('mode') === 'report') {
+    if (requestURL.searchParams.get('mode') === 'report') {
         // Tránh fallback, trả về kết quả fetch trực tiếp
         event.respondWith(fetch(event.request));
         return;
