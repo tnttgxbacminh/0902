@@ -361,8 +361,8 @@ video {
 	bottom: 100px; /* Khoảng cách từ đáy */
 	left: 50%; /* Nút bắt đầu từ giữa màn hình */
 	transform: translate(-50%, -50%);
-	height: 50px;
-	width: 50px;
+	height: 60px;
+	width: 60px;
 	border-radius: 50%;
 	background-color: rgba(0, 0, 0, 0.5); /* 50% trong suốt */
 	border: none;
@@ -370,6 +370,7 @@ video {
 	cursor: pointer;
 	z-index: 100; /* Nút nằm trên các phần tử khác */
 	font-size: 40px;
+	padding: 5px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
