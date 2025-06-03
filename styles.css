@@ -361,8 +361,8 @@ video {
 	bottom: 100px; /* Khoảng cách từ đáy */
 	left: 50%; /* Nút bắt đầu từ giữa màn hình */
 	transform: translate(-50%, -50%);
-	height: 45px;
-	width: 45px;
+	height: 50px;
+	width: 50px;
 	border-radius: 50%;
 	background-color: rgba(0, 0, 0, 0.5); /* 50% trong suốt */
 	border: none;
