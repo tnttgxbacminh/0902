@@ -1,4 +1,3 @@
-
 /* --- Biến màu sắc (Giữ nguyên) --- */
 :root {
 	--primary-color: #007bff;
@@ -101,7 +100,7 @@ body.app-active .header-container {
 	justify-content: space-around; /* Phân bố đều các icon */
 	align-items: center;
 	z-index: 950;
-	box-shadow: 0 -2px 1px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .toggle-button {
@@ -170,7 +169,7 @@ body.app-active .header-container {
 	background-color: var(--light-white);
 	display: flex;
 	flex-direction: column; /* Thay đổi thành column để chia thành 2 hàng */
-	box-shadow: 0 -2px 1px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 -2px 1px rgba(0, 0, 0, 0.2);
 	z-index: 1000;
 	border-radius: 25px 25px 0 0; /* Bo tròn chỉ góc trên */
 }
@@ -367,7 +366,7 @@ video {
 	border: 1px solid var(--neutral-color);
 	border-radius: 20px;
 	box-sizing: border-box;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Áp dụng cho button */
@@ -662,7 +661,7 @@ th {
 		font-size: 1rem; /* Giảm */
 		border: 1px solid var(--neutral-color);
 		border-radius: 20px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	}
 
 		.login-container input:focus {
@@ -685,7 +684,7 @@ th {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	}
 
 		.login-container button:hover {
