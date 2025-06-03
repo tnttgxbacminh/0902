@@ -548,7 +548,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (callback) callback();
         }, 500);
     }
-
     async function startCamera(loadingElem) {
         const videoConstraints = { facingMode: "environment" };
         const qrConfig = {
@@ -564,6 +563,10 @@ document.addEventListener("DOMContentLoaded", function () {
             await html5QrCode.start(videoConstraints, qrConfig, onScanSuccess, onScanFailure);
             isScanning = true;
             if (loadingElem) loadingElem.style.display = "none";
+
+            document.getElementById("complete-btn").style.display = "block";
+            document.querySelector(".mode-toggle").style.display = "none";
+
             // Sau khi camera được khởi động thành công, chuyển màu tiêu đề thành trắng
             const pageTitle = document.getElementById("page-title");
             if (pageTitle) {
@@ -642,6 +645,21 @@ document.addEventListener("DOMContentLoaded", function () {
             successMsg = studentName + attendanceDescription;
         }
 
+        // Lưu bản ghi vào IndexedDB mà không kiểm tra trạng thái mạng
+        const record = {
+            id: studentId,
+            type: currentAttendanceType,
+            holy: studentHoly,
+            name: studentName,
+            recordType: "single",
+            timestamp: Date.now()
+        };
+
+        showModal(studentName + " " + attendanceDescription, "normal");
+        saveAttendanceRecord(record);
+
+        /*
+
         if (!navigator.onLine) {
             // Nếu offline: lưu bản ghi vào IndexedDB
             const record = {
@@ -679,6 +697,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         // Hiển thị thông báo thành công ngay lập tức sau khi gọi fetch
         showModal(successMsg, "success");
+        */
+
     }
     // ---------------------
     // EVENT LISTENERS CHUYỂN ĐỔI GIAO DIỆN
@@ -779,6 +799,39 @@ document.addEventListener("DOMContentLoaded", function () {
         reportContainer.style.display = "none";
         infoContainer.style.display = "none";
     });
+
+    document.getElementById("complete-btn").addEventListener("click", function () {
+        if (isScanning) {
+            html5QrCode.stop().then(() => {
+                isScanning = false;
+                // Ẩn nút Hoàn thành khi dừng camera
+                document.getElementById("complete-btn").style.display = "none";
+                document.querySelector(".mode-toggle").style.display = "flex";
+
+                // Cập nhật giao diện, ví dụ chuyển về trang giao diện quét (theo logic của bạn)
+                btnReport.click();
+                document.getElementById("info-btn").click();
+
+                // Nếu có mạng, đồng bộ dữ liệu; nếu không, thông báo lỗi
+                if (navigator.onLine) {
+                    syncCombinedAttendanceRecords();
+                } else {
+                    showModal("Không có kết nối mạng. Vui lòng kiểm tra lại!", "error");
+                }
+            }).catch((err) => {
+                console.error("Lỗi khi tắt camera:", err);
+                showModal("Lỗi khi tắt camera!", "error");
+            });
+        } else {
+            // Nếu camera chưa bật: theo ý muốn bạn có thể thực hiện hành động khác hoặc bỏ qua.
+            if (navigator.onLine) {
+                syncCombinedAttendanceRecords();
+            } else {
+                showModal("Không có kết nối mạng. Vui lòng kiểm tra lại!", "error");
+            }
+        }
+    });
+
     btnSearch.addEventListener("click", () => {
         currentMode = "search";
         btnSearch.classList.add("active");
@@ -1074,7 +1127,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderInfoPage(data) {
         let html = `
-    <div class="table-responsive" style="max-height: calc(100vh - 200px); overflow-y: auto;">
+    <div class="info-responsive" style="max-height: calc(100vh - 200px); overflow-y: auto;">
   `;
 
         data.forEach((record, index) => {
@@ -1120,6 +1173,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Gán kết quả vào vùng hiển thị
         document.getElementById("info-results").innerHTML = html;
     }
+
     // ---------------------
     // HIỂN THỊ TABLE VÀ GỬI DỮ LIỆU BATCH
     // ---------------------
@@ -1312,9 +1366,10 @@ document.addEventListener("DOMContentLoaded", function () {
         currentReportPage = 1;
         renderReportTable();
     }
-    
+
     window.handleReportData = handleReportData;
-    
+
+
     function fetchReportDataJSONP(query) {
         const script = document.createElement("script");
         const url = webAppUrl +
