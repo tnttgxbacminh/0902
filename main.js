@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 //console.log("Đã lưu điểm danh Offline:", record);
                 // Chỉ hiển thị modal nếu chưa được hiển thị trong phiên này
                 if (!hasNotifiedOffline) {
-                    showModal("Lưu Offline - Vào lại App khi có mạng!\nĐể gửi điểm danh.", "status");
+                    showModal("Lưu Offline!", "error");
                     sendOfflineNotification();
                     hasNotifiedOffline = true;
                 }
@@ -816,7 +816,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (navigator.onLine) {
                     syncCombinedAttendanceRecords();
                 } else {
-                    showModal("Không có kết nối mạng. Vui lòng kiểm tra lại!", "error");
+                    showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "error");
                 }
             }).catch((err) => {
                 console.error("Lỗi khi tắt camera:", err);
