@@ -358,9 +358,9 @@ video {
 
 #complete-btn {
 	position: absolute;
-	bottom: 30px; /* Khoảng cách từ đáy */
+	bottom: 100px; /* Khoảng cách từ đáy */
 	left: 50%; /* Nút bắt đầu từ giữa màn hình */
-	transform: translateX(-50%); /* Dịch chuyển nút về giữa thực sự */
+	transform: translate(-50%, -50%);
 	height: 45px;
 	width: 45px;
 	border-radius: 50%;
@@ -369,7 +369,7 @@ video {
 	color: var(--card-bg);
 	cursor: pointer;
 	z-index: 100; /* Nút nằm trên các phần tử khác */
-	font-size: 2.5rem;
+	font-size: 40px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -377,6 +377,7 @@ video {
 
 	#complete-btn:hover {
 		background-color: var(--light-white);
+		color: var(--text-color);
 	}
 
 /* --- Style cho Search & Report --- */
