@@ -477,9 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function hideStatusDropdown() {
         const dropdown = document.getElementById("status-dropdown");
         dropdown.classList.remove("show");
-        setTimeout(() => {
-            dropdown.style.display = "none";
-        }, 300);
+        dropdown.style.display = "none";
     }
 
     const attendanceTypeName = {
@@ -650,11 +648,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function submitAttendance(studentId, studentHoly = "", studentName = "") {
         let attendanceDescription = "";
         if (currentAttendanceType === "di-le") {
-            attendanceDescription = " đi lễ ";
+            attendanceDescription = " thánh lễ ";
         } else if (currentAttendanceType === "di-hoc") {
-            attendanceDescription = " đi học ";
+            attendanceDescription = " giáo lý ";
         } else if (currentAttendanceType === "khac") {
-            attendanceDescription = " khác ";
+            attendanceDescription = " thống hối ";
         }
 
         if (studentName.trim() !== "") {
