@@ -260,9 +260,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-
                 // Hiển thị thông báo “Đang gửi dữ liệu...” có spinner
-                showModal('<span class="spinner"></span>\nĐang gửi dữ liệu điểm danh Offline...', "status", true);
+                showModal('<span class="spinner"></span>\nĐang gửi dữ liệu điểm danh...', "status", true);
 
                 // Gửi payload chung dạng JSON đến server
                 retryFetch(webAppUrl, {
@@ -292,6 +291,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }).catch(err => console.error(err));
     }
 
+    function hasOfflineRecords() {
+        return openAttendanceDB().then(db => {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction("offlineAttendance", "readonly");
+                const store = transaction.objectStore("offlineAttendance");
+                const req = store.count();
+
+                req.onsuccess = () => {
+                    resolve(req.result > 0);
+                };
+
+                req.onerror = () => {
+                    reject("Lỗi khi kiểm tra dữ liệu offline.");
+                };
+            });
+        });
+    }
     function clearOfflineAttendanceStore() {
         openAttendanceDB().then(db => {
             const transaction = db.transaction("offlineAttendance", "readwrite");
@@ -807,25 +823,39 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Ẩn nút Hoàn thành khi dừng camera
                 document.getElementById("complete-btn").style.display = "none";
                 document.querySelector(".mode-toggle").style.display = "flex";
-                // Cập nhật giao diện, ví dụ chuyển về trang giao diện quét (theo logic của bạn)
+
+                // Cập nhật giao diện
                 btnReport.click();
-                document.getElementById("report-btn").click();
-                // Nếu có mạng, đồng bộ dữ liệu; nếu không, thông báo lỗi
+                document.getElementById("info-btn").click();
+
                 if (navigator.onLine) {
                     syncCombinedAttendanceRecords();
                 } else {
-                    showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "error");
+                    // Kiểm tra tồn tại bản ghi offline trước khi thông báo lỗi
+                    hasOfflineRecords().then(hasRecords => {
+                        if (hasRecords) {
+                            showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "status");
+                        }
+                    }).catch(err => {
+                        console.error(err);
+                        // Trong trường hợp lỗi khi truy xuất dữ liệu, bạn có thể thông báo hoặc log lỗi
+                    });
                 }
             }).catch((err) => {
                 console.error("Lỗi khi tắt camera:", err);
                 showModal("Lỗi khi tắt camera!", "error");
             });
         } else {
-            // Nếu camera chưa bật: theo ý muốn bạn có thể thực hiện hành động khác hoặc bỏ qua.
             if (navigator.onLine) {
                 syncCombinedAttendanceRecords();
             } else {
-                showModal("Không có kết nối mạng. Vui lòng kiểm tra lại!", "error");
+                hasOfflineRecords().then(hasRecords => {
+                    if (hasRecords) {
+                        showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "status");
+                    }
+                }).catch(err => {
+                    console.error(err);
+                });
             }
         }
     });
