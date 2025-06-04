@@ -94,7 +94,7 @@ body.app-active .header-container {
 	bottom: 0; /* Căn dưới */
 	left: 0; /* Căn trái */
 	width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-	height: 70px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
+	height: 75px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
 	background-color: var(--light-white);
 	display: flex;
 	justify-content: space-around; /* Phân bố đều các icon */
@@ -125,7 +125,8 @@ body.app-active .header-container {
 .nav-label {
 	display: block;
 	font-size: 0.75rem;
-	margin-top: 3px; /* Khoảng cách giữa icon và chữ */
+	margin-top: 5px; /* Khoảng cách giữa icon và chữ */
+	margin-bottom: 25px;
 	color: var(--text-color);
 }
 
@@ -756,7 +757,7 @@ th {
 
 	.mode-toggle {
 		width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-		height: 60px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
+		height: 75px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
 	}
 
 	.nav-icon {
@@ -767,8 +768,8 @@ th {
 
 	.nav-label {
 		font-size: 0.58rem;
-		margin-top: 3px; /* Khoảng cách giữa icon và chữ */
-		margin-bottom: 10px;
+		margin-top: 5px; /* Khoảng cách giữa icon và chữ */
+		margin-bottom: 25px;
 	}
 
 	.function-container {
