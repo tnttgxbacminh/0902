@@ -164,7 +164,7 @@ body.app-active .header-container {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 150px;
+	height: 200px;
 	background-color: var(--light-white);
 	display: flex;
 	flex-direction: column; /* Thay đổi thành column để chia thành 2 hàng */
