@@ -272,8 +272,6 @@ body.app-active .header-container {
 		flex: 1; /* Chia đều không gian cho mỗi cột */
 	}
 
-
-
 /* --- Container chức năng --- */
 .function-container {
 	display: flex;
@@ -297,7 +295,6 @@ body.app-active .header-container {
 		padding: 10px; /* Giảm padding */
 		/* Thêm overflow nếu nội dung có thể dài */
 	}
-
 
 /* --- Fullscreen QR Container --- */
 #qr-container.fullscreen {
@@ -430,7 +427,6 @@ video {
 	display: block;
 }
 
-
 /* --- Bảng (Table) --- */
 
 table {
@@ -515,7 +511,6 @@ th {
 	font-size: 0.6rem;
 	/* Bạn cũng có thể thêm các thuộc tính khác như font-weight, color,... */
 }
-
 
 /* --- Nút xác nhận điểm danh --- */
 .confirm-attendance-btn {
@@ -756,12 +751,13 @@ th {
 
 	.mode-toggle {
 		width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-		height: 75px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
+		height: 70px; /* Chiều cao phù hợp, bạn có thể điều chỉnh */
 	}
 
 	.nav-icon {
 		width: 25px;
 		height: 25px;
+		margin-top: 15px;
 	}
 
 	.nav-label {
