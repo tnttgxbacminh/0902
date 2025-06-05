@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("login-form").addEventListener("submit", function (e) {
         e.preventDefault();
         document.activeElement.blur();
+
         const account = document.getElementById("login-account").value.trim();
         const password = document.getElementById("login-password").value.trim();
 
@@ -98,15 +99,17 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Lấy các thành phần spinner và nút đăng nhập
-        const loginButton = document.getElementById("login-submit");
-        const spinner = document.getElementById("login-spinner");
+        // Lấy phần tử chứa text và spinner bên trong nút đăng nhập
+        const loginButtonText = document.querySelector("#login-submit .btn-text");
+        const spinnerInButton = document.querySelector("#login-submit .spinner-login");
 
-        // Khi bắt đầu đăng nhập, disable nút và hiển thị spinner
-        loginButton.disabled = true;
-        spinner.style.display = "inline-block";
+        // Khi bắt đầu xử lý, ẩn text và hiển thị spinner
+        loginButtonText.style.display = "none";
+        spinnerInButton.style.display = "inline-block";
 
-        // Gửi thông tin đăng nhập tới server qua POST
+        // Vô hiệu hóa nút đăng nhập
+        document.getElementById("login-submit").disabled = true;
+
         fetch(webAppUrl, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -115,7 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.status === "success") {
-                    // Nếu đăng nhập thành công, hiển thị thông báo và chuyển giao diện
                     localStorage.setItem("loginTimestamp", new Date().getTime());
                     document.getElementById("login-container").style.display = "none";
                     document.querySelector(".mode-toggle").style.display = "flex";
@@ -123,9 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.body.classList.add('app-active');
                     btnReport.click();
                     document.getElementById("info-btn").click();
-
                 } else {
-                    // Nếu đăng nhập thất bại, hiển thị lỗi
                     showModal(data.message || "Sai tài khoản hoặc mật khẩu.", "error");
                     document.body.classList.remove('app-active');
                 }
@@ -135,12 +135,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 showModal("Lỗi kết nối server!", "error");
             })
             .finally(() => {
-                // Ẩn spinner và bật lại nút đăng nhập
-                spinner.style.display = "none";
-                loginButton.disabled = false;
+                // Sau khi hoàn tất xử lý, hiển thị lại text và ẩn spinner, đồng thời kích hoạt lại nút đăng nhập
+                spinnerInButton.style.display = "none";
+                loginButtonText.style.display = "inline-block";
+                document.getElementById("login-submit").disabled = false;
             });
     });
-
 
     // Các biến và khởi tạo
     const webAppUrl =
