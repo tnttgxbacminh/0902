@@ -22,9 +22,10 @@
         <form id="login-form">
             <input type="text" id="login-account" placeholder="Tài khoản" required />
             <input type="password" id="login-password" placeholder="Mật khẩu" required />
-            <button type="submit" id="login-submit">Đăng nhập</button>
-            <!-- Spinner hiển thị khi đăng nhập đang xử lý -->
-            <div id="login-spinner" class="spinner" style="display: none;"></div>
+            <button type="submit" id="login-submit">
+                <span class="btn-text">Đăng nhập</span>
+                <span class="spinner-login" style="display: none;"></span>
+            </button>
         </form>
     </div>
     
@@ -113,7 +114,7 @@
                 <div class="icon-container">
                     <img src="/0902/images/report.png" alt="Report" class="dropdown-icon" />
                 </div>
-                <span>Thống kê</span>
+                <span>Kết quả</span>
             </div>
             <div id="info-btn" class="status-box">
                 <div class="icon-container">
