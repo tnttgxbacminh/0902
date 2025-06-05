@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Chỉ hiển thị modal nếu chưa được hiển thị trong phiên này
                 if (!hasNotifiedOffline) {
                     //showModal("Đã lưu điểm danh!", "error");
-                    sendOfflineNotification();
+                    //sendOfflineNotification();
                     hasNotifiedOffline = true;
                 }
             };
@@ -833,6 +833,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     hasOfflineRecords().then(hasRecords => {
                         if (hasRecords) {
                             showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "status");
+                            sendOfflineNotification();
                         }
                     }).catch(err => {
                         console.error(err);
@@ -1358,6 +1359,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         };
                         showModal("Lưu Offline" + attendanceDescription + selectedIds.length + " thiếu nhi.", "normal");
                         saveAttendanceRecord(batchRecord);
+                        sendOfflineNotification();
                     }
 
                     // Reset giao diện
