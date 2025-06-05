@@ -48,8 +48,8 @@ body {
 /* --- Hình ảnh trên cùng --- */
 .top-image {
 	/* Giảm kích thước mặc định */
-	width: 150px;
-	height: 150px;
+	width: 130px;
+	height: 130px;
 	overflow: hidden;
 	/* Giảm margin */
 	margin: 30px 0;
@@ -653,8 +653,10 @@ th {
 	top: 50%;
 	left: 50%;
 	width: 95%;
-	max-width: 900px;
-	padding: 20px 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	border-radius:30px;
+	max-width: 400px;
+	padding: 60px 10px;
 	text-align: center;
 	transform: translate(-50%, -50%);
 }
@@ -709,7 +711,7 @@ th {
 		/* Giảm kích thước thêm */
 		width: 95px;
 		height: 95px;
-		margin: 40px 0;
+		margin: 100px 0 10px 0;
 	}
 	#search-query,
 	#report-query,
