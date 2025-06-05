@@ -1290,11 +1290,11 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmAttendanceBtn.addEventListener("click", async function () {
                 let attendanceDescription = "";
                 if (currentAttendanceType === "di-le") {
-                    attendanceDescription = " đi lễ ";
+                    attendanceDescription = " thánh lễ ";
                 } else if (currentAttendanceType === "di-hoc") {
-                    attendanceDescription = " đi học ";
+                    attendanceDescription = " giáo lý ";
                 } else if (currentAttendanceType === "khac") {
-                    attendanceDescription = " khác ";
+                    attendanceDescription = " thống hối ";
                 }
 
                 // Nếu nút toggle-off (xin vắng) đang active thì thêm mô tả
@@ -1706,7 +1706,6 @@ document.addEventListener("DOMContentLoaded", function () {
         printWindow.document.write(html);
         printWindow.document.close();
         printWindow.focus();
-
         // Nếu trình duyệt hỗ trợ, tự động đóng cửa sổ in sau khi in xong
         printWindow.onafterprint = function () {
             printWindow.close();
