@@ -48,8 +48,8 @@ body {
 /* --- Hình ảnh trên cùng --- */
 .top-image {
 	/* Giảm kích thước mặc định */
-	width: 130px;
-	height: 130px;
+	width: 110px;
+	height: 110px;
 	overflow: hidden;
 	/* Giảm margin */
 	margin: 10vh 0 10px 0;
@@ -159,12 +159,13 @@ body.app-active .header-container {
 }
 
 /* --- Dropdown trạng thái --- */
+/* Container dropdown: hiển thị theo chiều dọc */
 .dropdown {
 	position: fixed;
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 200px;
+	height: 200px; /* Bạn có thể điều chỉnh */
 	background-color: var(--light-white);
 	display: flex;
 	flex-direction: column; /* Thay đổi thành column để chia thành 2 hàng */
@@ -252,6 +253,7 @@ body.app-active .header-container {
 	padding: 10px;
 	margin: 10px 0 10px 0;
 }
+
 	.info-card:last-child {
 		margin-bottom: 70px;
 	}
@@ -353,7 +355,7 @@ video {
 	bottom: 70px; /* Khoảng cách từ đáy */
 	left: 50%; /* Nút bắt đầu từ giữa màn hình */
 	transform: translate(-50%, -50%);
-    padding: 5px 21px 10px 21px;
+	padding: 5px 21px 10px 21px;
 	border-radius: 50%;
 	background-color: rgba(0, 0, 0, 0.8); /* 50% trong suốt */
 	border: none;
@@ -420,11 +422,11 @@ video {
 	width: 100%;
 }
 
-.input-group img {
-	width: 28px;
-	height: 28px;
-	display: block;
-}
+	.input-group img {
+		width: 28px;
+		height: 28px;
+		display: block;
+	}
 
 /* --- Bảng (Table) --- */
 
@@ -636,6 +638,18 @@ th {
 	display: inline-block;
 }
 
+.spinner-login {
+	margin: 0 5px 0 0; /* Điều chỉnh margin */
+	width: 25px; /* Giảm */
+	height: 25px;
+	border: 3px solid rgba(255, 255, 255, 0.3); /* Màu sáng hơn trên nền tối */
+	border-left-color: var(--card-bg); /* Giữ nguyên */
+	border-radius: 50%;
+	animation: spin 0.8s linear infinite;
+	vertical-align: middle;
+	display: inline-block;
+}
+
 @keyframes spin {
 	to {
 		transform: rotate(360deg);
@@ -654,7 +668,7 @@ th {
 	left: 50%;
 	width: 100%;
 	max-width: 400px;
-	padding: 60px 10px;
+	padding: 40px 20px;
 	text-align: center;
 	transform: translate(-50%, -50%);
 }
@@ -662,7 +676,7 @@ th {
 	.login-container input {
 		width: 100%;
 		height: 45px;
-		padding: 0 50px 0 20px; /* padding-right đủ để chứa button */
+		padding: 0 10px 0 20px; /* padding-right đủ để chứa button */
 		margin: 10px 0; /* Giảm margin */
 		font-size: 1.2rem; /* Giảm */
 		border: 1px solid var(--neutral-color);
@@ -709,28 +723,34 @@ th {
 		/* Giảm kích thước thêm */
 		width: 95px;
 		height: 95px;
+		margin: 10vh 0 10px 0;
 	}
+
 	#search-query,
 	#report-query,
 	#info-query {
 		height: 40px;
 		font-size: 1rem;
 	}
+
 	#search-button,
 	#report-button,
 	#info-button {
 		height: 32px;
 		width: 32px;
 	}
+
 	.input-group img {
 		width: 25px;
 		height: 25px;
 	}
+
 	.login-container button,
 	.login-container input {
 		height: 40px;
 		font-size: 1rem;
 	}
+
 	body.app-active .header-container {
 		padding: 50px 5px 5px 20px;
 	}
