@@ -177,7 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Biến cờ cục bộ để kiểm tra xem đã gửi thông báo offline hay chưa (cho phiên này)
     let hasNotifiedOffline = false;
-
     function saveAttendanceRecord(record) {
         openAttendanceDB().then(db => {
             const transaction = db.transaction("offlineAttendance", "readwrite");
@@ -308,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+    
     function clearOfflineAttendanceStore() {
         openAttendanceDB().then(db => {
             const transaction = db.transaction("offlineAttendance", "readwrite");
@@ -1350,14 +1350,14 @@ document.addEventListener("DOMContentLoaded", function () {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ records: records })
                         }, 3, 2000);
-                        showModal("Điểm danh" + attendanceDescription + selectedIds.length + " thiếu nhi.", "success");
+                        showModal("Gửi xong" + attendanceDescription + selectedIds.length + " thiếu nhi.", "success");
                     } else {
                         const batchRecord = {
                             timestamp: Date.now(), // Thêm thuộc tính bắt buộc theo keyPath
                             recordType: "batch",   // Đánh dấu đây là bản ghi dạng batch
                             records: records       // Đây là mảng các bản ghi đã tạo
                         };
-                        showModal("Lưu Offline" + attendanceDescription + selectedIds.length + " thiếu nhi.", "normal");
+                        showModal("Offline! Lưu lại" + attendanceDescription + selectedIds.length + " thiếu nhi.", "normal");
                         saveAttendanceRecord(batchRecord);
                         sendOfflineNotification();
                     }
