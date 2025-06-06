@@ -1564,15 +1564,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 font-size: 20px;
                 font-weight: normal;
               }
-               @page {
-                size: A4 landscape;
-                margin-top: 10mm;
-                margin-bottom: 10mm;
-                margin-left: 15mm;
-                margin-right: 10mm;  
-               }
               /* Khi in, lặp lại header của bảng trên mỗi trang */
               @media print {
+                @page {
+                  size: A4 landscape;
+                  margin-top: 10mm;
+                  margin-bottom: 10mm;
+                  margin-left: 15mm;
+                  margin-right: 10mm;  
+                }
                 thead {
                   display: table-header-group;
                 }
