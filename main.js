@@ -1516,95 +1516,98 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Xây dựng nội dung HTML cho in báo cáo
         let html = `
-        <html>
-          <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>Báo cáo điểm danh${!hasMultipleClasses ? " - " + headerClassText : ""}</title>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                padding: 0;
-                margin: 0 10px;
-              }
-              table {
-                width: 100%;
-                border-collapse: collapse;
-                table-layout: fixed;
-                font-size: 13px;
-                margin-top: 20px;
-              }
-              th, td {
-                padding: 5px 5px;
-                box-sizing: border-box;
-                border: 0.5px solid black;
-                word-wrap: break-word;
-                white-space: normal;
-                text-align: center;
-                line-height: 1.2;
-                vertical-align: middle;
-              }
-              th {
-                font-weight: bold;
-              }
-              td:last-child, th:last-child {
-                text-align: center;
-              }
-              .header {
-                border: none;
-                text-align: center;
-              }
-
-              .header h1 {
-                margin: 0;
-                font-size: 30px;
-                text-transform: uppercase;
-              }
-              .header p {
-                margin: 10px 0 20px 0;
-                font-size: 20px;
-                font-weight: normal;
-              }
-              /* Khi in, lặp lại header của bảng trên mỗi trang */
-              @media print {
-                @page {
-                  size: A4 landscape;
-                  margin-top: 10mm;
-                  margin-bottom: 10mm;
-                  margin-left: 15mm;
-                  margin-right: 10mm;  
-                }
-                thead {
-                  display: table-header-group;
-                }
-                tr {
-                  page-break-inside: avoid;
-                  -webkit-page-break-inside: avoid;
-                }
-              }
-              @media (max-width: 767px) {
-                .header h1 {
-                margin: 0;
-                font-size: 28px;
-                }
-                .header p {
-                margin: 8px 0 8px 0;
-                font-size: 18px;
-                }
-                table {
-                  margin: 6px;
-                  table-layout: fixed;
-                  width: 100%;
-                  font-size: 12.2px;
-                  
-                }
-                th, td {
-                  padding: 4.5px 5px;
-                }
-              }
-            </style>
-          </head>
-          <body>
-      `;
+    <html>
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Báo cáo điểm danh${!hasMultipleClasses ? " - " + headerClassText : ""}</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            padding: 0;
+            margin: 0 10px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-size: 13px;
+            margin-top: 20px;
+          }
+          th, td {
+            padding: 5px 5px;
+            box-sizing: border-box;
+            border: 0.5px solid black;
+            word-wrap: break-word;
+            white-space: normal;
+            text-align: center;
+            line-height: 1.2;
+            vertical-align: middle;
+          }
+          th {
+            font-weight: bold;
+          }
+          td:last-child, th:last-child {
+            text-align: center;
+          }
+          .header {
+            border: none;
+            text-align: center;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 30px;
+            text-transform: uppercase;
+          }
+          .header p {
+            margin: 10px 0 20px 0;
+            font-size: 20px;
+            font-weight: normal;
+          }
+          /* Lớp cho page break */
+          .page-break {
+            page-break-before: always;
+          }
+          /* Khi in, lặp lại header của bảng trên mỗi trang */
+          @media print {
+            @page {
+              size: A4 landscape;
+              margin-top: 10mm;
+              margin-bottom: 10mm;
+              margin-left: 15mm;
+              margin-right: 10mm;
+            }
+            thead {
+              display: table-header-group;
+            }
+            tr {
+              page-break-inside: avoid;
+              -webkit-page-break-inside: avoid;
+            }
+          }
+          @media (max-width: 767px) {
+            .header h1 {
+              margin: 0;
+              font-size: 28px;
+            }
+            .header p {
+              margin: 8px 0 8px 0;
+              font-size: 18px;
+            }
+            table {
+              margin: 6px;
+              table-layout: fixed;
+              width: 100%;
+              font-size: 12.2px;
+            }
+            th, td {
+              padding: 4.5px 5px;
+            }
+          }
+        </style>
+      </head>
+      <body>
+  `;
         let currentIndex = 0;
         let page = 1;
         while (currentIndex < data.length) {
@@ -1612,9 +1615,9 @@ document.addEventListener("DOMContentLoaded", function () {
             let pageData = data.slice(currentIndex, currentIndex + rowsThisPage);
             currentIndex += rowsThisPage;
 
-            // Đối với trang thứ 2 trở đi, thêm trang mới bằng thẻ div tạo page-break
+            // Đối với trang thứ 2 trở đi, thêm thẻ div với class cho page-break
             if (page > 1) {
-                html += `<div style="page-break-before: always;"></div>`;
+                html += `<div class="page-break"></div>`;
             }
 
             // Tạo bảng cho trang hiện tại với header nằm trong <thead>
@@ -1636,8 +1639,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <col style="width: 6%;">
         </colgroup>
         <thead>
-    `;
-
+      `;
             // Trang đầu tiên có header báo cáo (tiêu đề + ngày)
             if (page === 1) {
                 html += `
@@ -1650,7 +1652,7 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
             }
 
-            // Hàng đầu tiên của header bảng (luôn hiển thị ở mọi trang)
+            // Hàng đầu tiên của header bảng (hiển thị ở mọi trang)
             html += `
             <tr>
               <th>STT</th>
@@ -1665,11 +1667,11 @@ document.addEventListener("DOMContentLoaded", function () {
               <th>Vắng</th>
               <th>Đi lễ</th>
               <th>Đi học</th>
-              <th>Khác</th>
+              <th>Đi</th>
             </tr>
           </thead>
           <tbody>
-    `;
+      `;
 
             // Thêm các dòng dữ liệu của trang hiện tại
             pageData.forEach(item => {
@@ -1690,13 +1692,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${item.percentDiHoc || ""}</td>
                 <td>${item.percentKhac || ""}</td>
               </tr>
-      `;
+          `;
             });
 
             html += `
           </tbody>
         </table>
-    `;
+      `;
             page++;
         }
 
@@ -1707,15 +1709,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         printWindow.document.write(html);
         printWindow.document.close();
-        printWindow.focus();
+
+        // Sử dụng onload để đảm bảo cửa sổ đã render xong
+        printWindow.onload = function () {
+            printWindow.focus();
+            printWindow.print();
+        };
+
         // Nếu trình duyệt hỗ trợ, tự động đóng cửa sổ in sau khi in xong
         printWindow.onafterprint = function () {
             printWindow.close();
         };
-
-        setTimeout(() => {
-            printWindow.print();
-        }, 1000);
     }
 
     // Kiểm tra nếu trình duyệt hỗ trợ Notification và trạng thái hiện tại là "default"
