@@ -577,15 +577,13 @@ document.addEventListener("DOMContentLoaded", function () {
             await html5QrCode.start(videoConstraints, qrConfig, onScanSuccess, onScanFailure);
             isScanning = true;
             if (loadingElem) loadingElem.style.display = "none";
-
-            document.getElementById("complete-btn").style.display = "block";
-            document.querySelector(".mode-toggle").style.display = "none";
-
             // Sau khi camera được khởi động thành công, chuyển màu tiêu đề thành trắng
             const pageTitle = document.getElementById("page-title");
             if (pageTitle) {
                 pageTitle.style.color = "#ffffff";
             }
+            document.getElementById("complete-btn").style.display = "block";
+            document.querySelector(".mode-toggle").style.display = "none";
             console.log("Camera bắt đầu quét mã QR với facingMode: 'environment'.");
         } catch (err) {
             showModal("Không truy cập được camera!", "error");
