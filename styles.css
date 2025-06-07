@@ -198,9 +198,9 @@ body.app-active .header-container {
 	position: absolute;
 	left: 20px;
 	top: 50%;
+	padding: 5px;
 	transform: translateY(-50%);
 	font-size: 35px;
-	line-height: 1;
 	cursor: pointer;
 }
 
@@ -355,14 +355,14 @@ video {
 	bottom: 70px; /* Khoảng cách từ đáy */
 	left: 50%; /* Nút bắt đầu từ giữa màn hình */
 	transform: translate(-50%, -50%);
-	padding: 5px 21px 10px 21px;
+	padding: 5px 22px 10px 22px;
 	border-radius: 50%;
 	background-color: rgba(0, 0, 0, 0.8); /* 50% trong suốt */
 	border: none;
 	color: var(--card-bg);
 	cursor: pointer;
 	z-index: 100; /* Nút nằm trên các phần tử khác */
-	font-size: 40px;
+	font-size: 42px;
 }
 
 	#complete-btn:hover {
@@ -391,7 +391,7 @@ video {
 #info-button {
 	position: absolute;
 	top: 50%;
-	right: 15px;
+	right: 20px;
 	transform: translateY(-50%);
 	height: 35px;
 	width: 35px;
@@ -729,15 +729,15 @@ th {
 	#search-query,
 	#report-query,
 	#info-query {
-		height: 40px;
+		height: 42px;
 		font-size: 1rem;
 	}
 
 	#search-button,
 	#report-button,
 	#info-button {
-		height: 32px;
-		width: 32px;
+		height: 34px;
+		width: 34px;
 	}
 
 	.input-group img {
