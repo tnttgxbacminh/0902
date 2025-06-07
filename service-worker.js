@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'attendance-cache-v12';
+﻿const CACHE_NAME = 'attendance-cache-v13';
 const urlsToCache = [
     '/0902/',
     '/0902/index.html',
@@ -72,7 +72,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('message', event => {
     if (event.data && event.data.action === 'offlineNotification') {
         self.registration.showNotification("Bản lưu Offline!", {
-            body: "Vào lại ứng dụng khi có mạng! Để đồng bộ dữ liệu.",
+            body: "Đừng quên trở lại ứng dụng khi có mạng! Để gửi dữ liệu điểm danh.",
             icon: "/0902/images/icon.png",
             tag: "offline-notification"
         });
