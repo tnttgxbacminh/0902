@@ -350,15 +350,14 @@ video {
 	height: 100%;
 	object-fit: cover;
 }
-
 #complete-btn {
 	position: absolute;
-	bottom: 10vh; /* Khoảng cách từ đáy */
+	bottom: 11vh; /* Khoảng cách từ đáy */
 	left: 50%; /* Nút bắt đầu từ giữa màn hình */
 	transform: translate(-50%, -50%);
 	padding: 3px 20px 8px 20px;
 	border-radius: 50%;
-	background-color: rgba(0, 0, 0, 0.8); /* 50% trong suốt */
+	background-color: rgba(0, 0, 0, 0.7); /* 50% trong suốt */
 	border: none;
 	color: var(--card-bg);
 	cursor: pointer;
