@@ -201,6 +201,7 @@ body.app-active .header-container {
 	padding: 5px;
 	transform: translateY(-50%);
 	font-size: 35px;
+	line-height: 0.5;
 	cursor: pointer;
 }
 
