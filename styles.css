@@ -355,7 +355,7 @@ video {
 	bottom: 11vh; /* Khoảng cách từ đáy */
 	left: 50%; /* Nút bắt đầu từ giữa màn hình */
 	transform: translate(-50%, -50%);
-	padding: 3px 20px 8px 20px;
+	padding: 3px 18px 8px 18px;
 	border-radius: 50%;
 	background-color: rgba(0, 0, 0, 0.7); /* 50% trong suốt */
 	border: none;
