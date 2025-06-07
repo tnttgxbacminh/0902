@@ -832,7 +832,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Kiểm tra tồn tại bản ghi offline trước khi thông báo lỗi
                     hasOfflineRecords().then(hasRecords => {
                         if (hasRecords) {
-                            alert("Không có kết nối mạng. Đừng quên trở lại app khi có mạng\nĐể gửi điểm danh.");
+                            alert("Không có kết nối mạng!. Đừng quên trở lại app khi có mạng để gửi điểm danh.");
                             //showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "status");
                             sendOfflineNotification();
                         }
@@ -851,7 +851,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 hasOfflineRecords().then(hasRecords => {
                     if (hasRecords) {
-                        alert("Không có kết nối mạng. Đừng quên trở lại app khi có mạng\nĐể gửi điểm danh.");
+                        alert("Không có kết nối mạng. Đừng quên trở lại app khi có mạng để gửi điểm danh.");
                         //showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "status");
                         sendOfflineNotification();
                     }
@@ -1361,8 +1361,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             records: records       // Đây là mảng các bản ghi đã tạo
                         };
                         saveAttendanceRecord(batchRecord);
-                        showModal("Offline! Lưu lại" + attendanceDescription + selectedIds.length + " thiếu nhi.\nĐừng quên trở lại app để gửi điểm danh.", "status");
-                        //alert("Offline! Lưu lại" + attendanceDescription + selectedIds.length + " thiếu nhi.\nĐừng quên trở lại app để gửi điểm danh.");
+                        //showModal("Offline! Lưu lại" + attendanceDescription + selectedIds.length + " thiếu nhi. Đừng quên trở lại app để gửi điểm danh.", "status");
+                        alert("Offline! Lưu lại" + attendanceDescription + selectedIds.length + " thiếu nhi. Đừng quên trở lại app để gửi điểm danh.");
                         sendOfflineNotification();
                     }
 
