@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!persistent) {
             let displayDuration;
             if (type === "status") {
-                displayDuration = 2500;
+                displayDuration = 3000;
             } else if (type === "error") {
                 displayDuration = 2000;
             } else {
@@ -307,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-    
+
     function clearOfflineAttendanceStore() {
         openAttendanceDB().then(db => {
             const transaction = db.transaction("offlineAttendance", "readwrite");
@@ -499,9 +499,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (currentMode === "qr") {
             headerText = `Quét QR ${attendanceTypeName[type] || ""}`;
         } else if (currentMode === "search") {
-                    // Kiểm tra nếu toggle off active, thay đổi tiền tố thành "Nghỉ phép"
-        const prefix = btnOff.classList.contains("active") ? "Nghỉ phép" : "Điểm danh";
-        headerText = `${prefix} ${attendanceTypeName[type] || ""}`;
+            // Kiểm tra nếu toggle off active, thay đổi tiền tố thành "Nghỉ phép"
+            const prefix = btnOff.classList.contains("active") ? "Nghỉ phép" : "Điểm danh";
+            headerText = `${prefix} ${attendanceTypeName[type] || ""}`;
         }
 
         updatePageTitle(headerText);
@@ -851,7 +851,9 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 hasOfflineRecords().then(hasRecords => {
                     if (hasRecords) {
-                        showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "status");
+                        alert("Không có kết nối mạng. Đừng quên trở lại app khi có mạng\nĐể gửi điểm danh.");
+                        //showModal("Không có mạng! - Vào lại App khi có mạng\nĐể gửi điểm danh.", "status");
+                        sendOfflineNotification();
                     }
                 }).catch(err => {
                     console.error(err);
